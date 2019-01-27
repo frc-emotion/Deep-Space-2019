@@ -14,5 +14,7 @@ public class Constants{
     public static final int MAX_CURRENT = 35; // max current that can be sent to sparks in amps
     public static final double GEAR_RATIO = ((double) 50 / 14) * ((double) 54 / 20); //gear box ratio to use for encoders
 
+    public static final double ENCODER_REV = 42; //number of ticks per motor rev
+
     
 }

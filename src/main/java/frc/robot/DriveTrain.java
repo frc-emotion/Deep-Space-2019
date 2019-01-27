@@ -16,12 +16,11 @@ public class DriveTrain {
     private CANSparkMax rSparkMaxA, rSparkMaxB, rSparkMaxC, lSparkMaxA, lSparkMaxB, lSparkMaxC;
     private ArrayList<CANSparkMax> driveSparkMaxes;
 
-
     private DifferentialDrive differentialDrive;
     private SpeedControllerGroup leftControllerGroup, rightControllerGroup;
 
     SendableChooser<Integer> testChoices;
-    
+
     public DriveTrain() {
         // initialize the 40 billion spark maxes we have
         rSparkMaxA = new CANSparkMax(Constants.DT_CAN_RA_PORT, MotorType.kBrushless);
@@ -71,31 +70,30 @@ public class DriveTrain {
     }
 
     void updateShuffleBoard() {
-        SmartDashboard.putNumber("Right Encoder", rSparkMaxA.getEncoder().getPosition());
-        SmartDashboard.putNumber("Right Velocity", rSparkMaxA.getEncoder().getVelocity());
-        SmartDashboard.putNumber("Left Encoder", lSparkMaxA.getEncoder().getPosition());
-        SmartDashboard.putNumber("Left Velocity", lSparkMaxA.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Right Encoder", rSparkMaxA.getEncoder().getPosition() * Constants.GEAR_RATIO);
+        SmartDashboard.putNumber("Right Velocity", rSparkMaxA.getEncoder().getVelocity() * Constants.GEAR_RATIO);
+        SmartDashboard.putNumber("Left Encoder", lSparkMaxA.getEncoder().getPosition() * Constants.GEAR_RATIO);
+        SmartDashboard.putNumber("Left Velocity", lSparkMaxA.getEncoder().getVelocity() * Constants.GEAR_RATIO);
     }
 
     public void testTrain() {
 
         int choice = testChoices.getSelected();
         switch (choice) {
-            case 1:
-                double currentValue = rSparkMaxA.getEncoder().getPosition(); // get current spark max value
-                while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) 42 * Constants.GEAR_RATIO)){
-                    differentialDrive.tankDrive(0.4, 0.4, false);
-                }
-                differentialDrive.tankDrive(0, 0);
-                break;
-            default:
-                differentialDrive.tankDrive(Robot.driveController.getY(Hand.kLeft),
-                        Robot.driveController.getY(Hand.kRight));
-                break;
+        case 1:
+            double currentValue = rSparkMaxA.getEncoder().getPosition(); // get current spark max value
+            while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) Constants.ENCODER_REV * Constants.GEAR_RATIO)) {
+                differentialDrive.tankDrive(0.4, 0.4, false);
+            }
+            differentialDrive.tankDrive(0, 0);
+            break;
+        default:
+            differentialDrive.tankDrive(Robot.driveController.getY(Hand.kLeft),
+                    Robot.driveController.getY(Hand.kRight));
+            break;
 
         }
 
-        
     }
 
 }
