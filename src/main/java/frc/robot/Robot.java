@@ -24,9 +24,10 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
+  DriveTrain driveTrain;
   @Override
   public void robotInit() {
-   
+    driveTrain = new DriveTrain();
   }
 
   /**
@@ -65,11 +66,17 @@ public class Robot extends TimedRobot {
     
   }
 
+  @Override
+  public void teleopInit() {
+    super.teleopInit();
+  }
+
   /**
    * This function is called periodically during operator control.
    */
   @Override
   public void teleopPeriodic() {
+    driveTrain.run();
   }
 
   /**
