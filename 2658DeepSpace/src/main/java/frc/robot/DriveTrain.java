@@ -5,11 +5,16 @@ import java.util.ArrayList;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
 public class DriveTrain{
-    CANSparkMax rSparkMaxA, rSparkMaxB, rSparkMaxC, 
+    private CANSparkMax rSparkMaxA, rSparkMaxB, rSparkMaxC, 
                 lSparkMaxA, lSparkMaxB, lSparkMaxC; 
-    ArrayList<CANSparkMax> driveSparkMaxes;
+    private ArrayList<CANSparkMax> driveSparkMaxes;
     private final int MAX_CURRENT = 35; // max current that can be sent to sparks in amps
+    private DifferentialDrive differentialDrive;
+    private SpeedControllerGroup leftControllerGroup, rightControllerGroup;
     public DriveTrain(){
         //initialize the 40 billion spark maxes we have
         rSparkMaxA = new CANSparkMax(Constants.DT_CAN_RA_PORT, MotorType.kBrushless);
@@ -37,8 +42,10 @@ public class DriveTrain{
             spark.setSmartCurrentLimit(MAX_CURRENT);
             spark.setSecondaryCurrentLimit(MAX_CURRENT);
         }
+        rightControllerGroup = new SpeedControllerGroup(rSparkMaxA, rSparkMaxB, rSparkMaxC);
+        leftControllerGroup = new SpeedControllerGroup(lSparkMaxA, lSparkMaxB, lSparkMaxC);
 
-        
+        differentialDrive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
 
 
