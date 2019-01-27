@@ -3,3 +3,5 @@ language: java
 install: true
 script: ./gradlew build
 jdk: oraclejdk11
+notifications:
+  slack: team2658cibuilds:eVRevD2hbTknKlV8ycrLsPQa
