@@ -83,11 +83,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-<<<<<<< HEAD
     driveTrain.run();
-=======
-    darudeDrive.run();
->>>>>>> 5a47324711a35f38e00407652ef7b0e28170844f
+
   }
 
   /**
@@ -95,6 +92,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    darudeDrive.testTrain();
+    driveTrain.testTrain();
   }
 }
