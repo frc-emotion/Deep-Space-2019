@@ -15,8 +15,7 @@ public class DriveTrain {
 
     private CANSparkMax rSparkMaxA, rSparkMaxB, rSparkMaxC, lSparkMaxA, lSparkMaxB, lSparkMaxC;
     private ArrayList<CANSparkMax> driveSparkMaxes;
-    private final int MAX_CURRENT = 35; // max current that can be sent to sparks in amps
-    private final double GEAR_RATIO = ((double) 50 / 14) * ((double) 54 / 20);
+
 
     private DifferentialDrive differentialDrive;
     private SpeedControllerGroup leftControllerGroup, rightControllerGroup;
@@ -47,8 +46,8 @@ public class DriveTrain {
         };
 
         for (CANSparkMax spark : driveSparkMaxes) {
-            spark.setSmartCurrentLimit(MAX_CURRENT);
-            spark.setSecondaryCurrentLimit(MAX_CURRENT);
+            spark.setSmartCurrentLimit(Constants.MAX_CURRENT);
+            spark.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
         }
 
         rightControllerGroup = new SpeedControllerGroup(rSparkMaxA, rSparkMaxB, rSparkMaxC);
@@ -82,7 +81,7 @@ public class DriveTrain {
         switch (choice) {
         case 0:
             double currentValue = rSparkMaxA.getEncoder().getPosition();
-            while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) 42 * GEAR_RATIO))
+            while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) 42 * Constants.GEAR_RATIO))
                 differentialDrive.tankDrive(0.4, 0.4, false);
             differentialDrive.tankDrive(0, 0);
             break;
