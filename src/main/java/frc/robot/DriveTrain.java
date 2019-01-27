@@ -21,7 +21,7 @@ public class DriveTrain {
     private SpeedControllerGroup leftControllerGroup, rightControllerGroup;
 
     SendableChooser<Integer> testChoices;
-
+    
     public DriveTrain() {
         // initialize the 40 billion spark maxes we have
         rSparkMaxA = new CANSparkMax(Constants.DT_CAN_RA_PORT, MotorType.kBrushless);
@@ -83,7 +83,7 @@ public class DriveTrain {
         switch (choice) {
             case 1:
                 double currentValue = rSparkMaxA.getEncoder().getPosition(); // get current spark max value
-                while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) 42 * GEAR_RATIO)){
+                while ((rSparkMaxA.getEncoder().getPosition() - currentValue) <= ((double) 42 * Constants.GEAR_RATIO)){
                     differentialDrive.tankDrive(0.4, 0.4, false);
                 }
                 differentialDrive.tankDrive(0, 0);
