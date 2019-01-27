@@ -21,7 +21,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
+<<<<<<< HEAD
   
+=======
+ 
+
+>>>>>>> b7b4e95b57afb5c24ea4c585a3c190e7ed846724
   public static XboxController driveController;
   DriveTrain driveTrain;
   /**
@@ -31,7 +36,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
+<<<<<<< HEAD
     driveTrain = new DriveTrain();
+=======
+    darudeDrive = new DriveTrain();
+>>>>>>> b7b4e95b57afb5c24ea4c585a3c190e7ed846724
 
   }
 

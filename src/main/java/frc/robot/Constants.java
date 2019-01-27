@@ -11,5 +11,7 @@ public class Constants{
 
     public static final int DRIVE_CONTROLLER_PORT = 0;
 
+    public static final int MAX_CURRENT = 35; // max current that can be sent to sparks in amps
+    
     
 }
