@@ -24,16 +24,29 @@ public class Arm extends Thread{
     boolean holdEnabled = false, macroEnabled = false; // checks to see if the arm should hold its position or perform a macro
     double holdPos = 0; // store which position arm should hold
     int[] macroCheck = new int[6]; // this list tracks which macro is enabled. A switch statement in the run loop checks which macro is running
+    double[] macroPosList = new double[6];
+    double startEncoderVal = 0;
+
+
     
     public Arm(){
         armSparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
         armSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
 
         armEncoder = new CANEncoder(armSparkMax);
-        
+        startEncoderVal = armEncoder.getPosition(); // get the inital encoder val just incase it doesnt start from zero
+
         armPidControl = new PIDControl(1f, 0f, 0f); // configure arm pid tuning values
         armPidControl.setScale(1.0/200.0); // scale down values 
         armPidControl.setMaxSpeed(0.5); // set max speed while performing pid
+
+        //load all the macro values
+        macroPosList[0] = startEncoderVal; //floor;
+        macroPosList[1] = startEncoderVal + 10.0; //bottom hatch
+        macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
+
+
+
 
         updateSmartDashboard();
 
@@ -88,20 +101,11 @@ public class Arm extends Thread{
         //     armPidControl.cleanup();
         //  }
        
-       
-        //   int toggled = getToggled();
-        //   switch(toggled){
-       
-        //    case 0: // bottom
-        //    armSparkMax.set(armPidControl.getValue(0, armEncoder.getPosition()));
-        //      break;
-        //    case 1:
-        //    armSparkMax.set(armPidControl.getValue(0, armEncoder.getPosition()));
-        //      break;
-        //    case 2:
-        //    armSparkMax.set(armPidControl.getValue(0, armEncoder.getPosition()));
-        //      break;
-        //   }
+        // int toggled = getToggled();
+        // if(toggled != -1){
+        //     armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
+        // }
+      
 
     }
     /**
