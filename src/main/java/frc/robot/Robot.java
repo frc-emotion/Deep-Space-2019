@@ -23,7 +23,7 @@ public class Robot extends TimedRobot {
 
   
   public static XboxController driveController;
-  DriveTrain driveTrain;
+  public static XboxController operatorController;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
-    driveTrain = new DriveTrain();
+    operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
 
 
   }
@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    driveTrain.run();
+
 
   }
 
@@ -93,6 +93,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    driveTrain.testTrain();
+
   }
 }
