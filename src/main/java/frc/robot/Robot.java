@@ -9,8 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +22,7 @@ public class Robot extends TimedRobot {
   
   public static XboxController driveController;
   public static XboxController operatorController;
+  
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -31,7 +30,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
-    operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
+    operatorController = new XboxController(Constants.OP_CONTROLLER_PORT);
 
 
   }
