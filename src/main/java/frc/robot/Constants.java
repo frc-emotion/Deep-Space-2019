@@ -11,6 +11,14 @@ public class Constants{
     
     /* Number of encoder ticks per Neo revolution */
     public static final double ENCODER_REV = 42; 
+
+    /* Port numbers for drivetrain Neos */
+    public static final int DT_CAN_RA_PORT = 1;
+    public static final int DT_CAN_RB_PORT = 2;
+    public static final int DT_CAN_RC_PORT = 3;
+    public static final int DT_CAN_LA_PORT = 4;
+    public static final int DT_CAN_LB_PORT = 5;
+    public static final int DT_CAN_LC_PORT = 6;
     
     
 }
