@@ -24,6 +24,10 @@ public class Robot extends TimedRobot {
   
   public static XboxController driveController;
   public static XboxController operatorController;
+
+  Arm armMech;
+  Wrist wristMech;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -33,7 +37,8 @@ public class Robot extends TimedRobot {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
 
-
+    armMech = new Arm();
+    wristMech =  new Wrist();
   }
 
   /**
@@ -84,7 +89,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    armMech.run();
+    wristMech.run();
 
   }
 

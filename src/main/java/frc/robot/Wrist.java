@@ -23,7 +23,7 @@ public class Wrist extends Thread{
     boolean holdEnabled = false, macroEnabled = false; // checks to see if the wrist should hold its position or perform a macro
     double holdPos = 0; // store which position wrist should hold
     int[] macroCheck = new int[6]; // this list tracks which macro is enabled. A switch statement in the run loop checks which macro is running
-    
+
     public Wrist(){
         wristSparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
         wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
@@ -34,7 +34,7 @@ public class Wrist extends Thread{
         wristPidControl.setScale(1.0/200.0); // scale down values 
         wristPidControl.setMaxSpeed(0.5); // set max speed while performing pid
 
-
+        updateSmartDashboard();
     }
 
     /**
@@ -44,6 +44,7 @@ public class Wrist extends Thread{
      */
     @Override
     public void run() {
+        updateSmartDashboard();
          // if controller is under a threshold and not in hold mode, then the operator has probably let go of the jstick
         // so activate the hold mode
         if(Math.abs(Robot.operatorController.getY(Hand.kRight)) < 0.2 && !holdEnabled){ 
