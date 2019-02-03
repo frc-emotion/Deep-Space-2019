@@ -7,12 +7,15 @@ public class Constants{
     public static final double ENCODER_REV = 42; //number of ticks per motor rev
 
 
-    // ARM 
+
+    // CAN BUS IDS: 
+
+    // Arm
     public static final int ARM_SPARK_CID = 0;
     // Wrist joint
     public static final int WRIST_SPARK_CID = 0;
 
-    // intake motors
+    // Intake motors
     public static final int INTAKE_SPARK_CID_R = 0;
     public static final int INTAKE_SPARK_CID_L = 0;
     

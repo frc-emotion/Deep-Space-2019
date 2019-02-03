@@ -24,18 +24,18 @@ public class Arm extends Thread{
     boolean holdEnabled = false, macroEnabled = false; // checks to see if the arm should hold its position or perform a macro
     double holdPos = 0; // store which position arm should hold
     int[] macroCheck = new int[6]; // this list tracks which macro is enabled. A switch statement in the run loop checks which macro is running
-
+    
     public Arm(){
         armSparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
         armSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
 
         armEncoder = new CANEncoder(armSparkMax);
         
-        armPidControl = new PIDControl(0f, 0f, 0f); // configure arm pid tuning values
+        armPidControl = new PIDControl(1f, 0f, 0f); // configure arm pid tuning values
         armPidControl.setScale(1.0/200.0); // scale down values 
         armPidControl.setMaxSpeed(0.5); // set max speed while performing pid
 
-
+        updateSmartDashboard();
 
     }
 
@@ -47,6 +47,7 @@ public class Arm extends Thread{
      */
     @Override
     public void run() {
+        updateSmartDashboard();
         // if controller is under a threshold and not in hold mode, then the operator has probably let go of the jstick
         // so activate the hold mode
         if(Math.abs(Robot.operatorController.getY(Hand.kLeft)) < 0.2 && !holdEnabled){ 
