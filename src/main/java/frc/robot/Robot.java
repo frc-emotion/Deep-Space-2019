@@ -27,7 +27,7 @@ public class Robot extends TimedRobot {
 
   Arm armMech;
   Wrist wristMech;
-
+  Intake intakeMech;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
 
     armMech = new Arm();
     wristMech =  new Wrist();
+    intakeMech = new Intake();
   }
 
   /**
@@ -91,6 +92,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     armMech.run();
     wristMech.run();
+    intakeMech.run();
 
   }
 
