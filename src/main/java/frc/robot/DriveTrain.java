@@ -14,8 +14,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * This class handles the robot's drivetrain. It contains arcade, tank, and
- * pathfinder implementations.
+ * Class that runs the Drive Train
+ * <p>
+ * Operation: Both joysticks on the driver contorller.
+ * <p>
+ * Notes: Current limit is 35 amps for drive neos.
  * 
  * @author Gokul Swaminathan
  */
@@ -85,9 +88,7 @@ public class DriveTrain {
     }
 
     /**
-     * This method will be called in teleop periodic. It will be running in a loop
-     * every 0.02 seconds. It also contains the first set of drive choices, the path
-     * choices for pathfinder.
+     * Method that will be called in teleop
      */
     public void run() {
         workShuffleBoard();
@@ -177,7 +178,7 @@ public class DriveTrain {
     }
 
     /**
-     * Initialize shuffleboard values and drop downs
+     * Initializes shuffleboard values and drop downs
      */
     private void initShuffleBoard() {
         SmartDashboard.putNumber("Drive Power", drivePower);
@@ -196,7 +197,7 @@ public class DriveTrain {
     }
 
     /**
-     * Keep updating shuffleboard values
+     * Keeps updating shuffleboard values
      */
     private void workShuffleBoard() {
         SmartDashboard.putNumber("Right Drive Encoder Position", rEncoder.getPosition());

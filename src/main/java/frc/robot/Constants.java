@@ -19,6 +19,4 @@ public class Constants{
     public static final int DT_CAN_LA_PORT = 4;
     public static final int DT_CAN_LB_PORT = 5;
     public static final int DT_CAN_LC_PORT = 6;
-    
-    
 }
