@@ -7,9 +7,11 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -21,13 +23,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  
   public static XboxController driveController;
   public static XboxController operatorController;
-
   Arm armMech;
   Wrist wristMech;
   Intake intakeMech;
+
+  // Nav-X Gyro
+  public static AHRS gyro;
+  DriveTrain driveTrain;
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -40,6 +44,9 @@ public class Robot extends TimedRobot {
     armMech = new Arm();
     wristMech =  new Wrist();
     intakeMech = new Intake();
+    gyro = new AHRS(Port.kUSB);
+    driveTrain = new DriveTrain();
+
   }
 
   /**
@@ -53,6 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
   }
 
   /**
@@ -93,6 +101,7 @@ public class Robot extends TimedRobot {
     armMech.run();
     wristMech.run();
     intakeMech.run();
+    driveTrain.run();
 
   }
 
