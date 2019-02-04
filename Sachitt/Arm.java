@@ -13,6 +13,7 @@ public class Arm {
     public Arm() {
         //init arm
         arm = new CANSparkMax(Constants.ARM_PORT, MotorType.kBrushless);
+        arm.setSecondaryCurrentLimit(30);
     
     }
 
