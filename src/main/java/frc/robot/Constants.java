@@ -22,7 +22,7 @@ public class Constants{
 
     /* Constants for PathFinder in metric units */
     public static double WHEELBASE_WIDTH = 0.6898513;
-    public static double WHEEL_DIAMETER = 0;
+    public static double WHEEL_DIAMETER = 0.1524;
     public static double MAX_VELOCITY = 0;
 
 }
