@@ -158,7 +158,7 @@ public class Arm extends Thread{
         }
         return -1;
       }
-    /**
+    /** 
      * Publish relevant values to the smartdashboard. Make sure this isnt called at comp.
      * @return void
      */
@@ -167,6 +167,6 @@ public class Arm extends Thread{
         SmartDashboard.putNumber("ARM HOLD POS", holdPos);
         SmartDashboard.putBoolean("HOLD?", holdEnabled);
         SmartDashboard.putNumber("ARM MOTOR TEMP", armSparkMax.getMotorTemperature());
-
+ssi dont ijs
     }
 }
