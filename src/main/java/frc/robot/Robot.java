@@ -25,13 +25,16 @@ public class Robot extends TimedRobot {
 
   public static XboxController driveController;
   public static XboxController operatorController;
+
+  // Mechs
   Arm armMech;
   Wrist wristMech;
   Intake intakeMech;
+  DriveTrain driveTrain;
 
   // Nav-X Gyro
   public static AHRS gyro;
-  DriveTrain driveTrain;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -42,11 +45,11 @@ public class Robot extends TimedRobot {
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
 
     armMech = new Arm();
-    wristMech =  new Wrist();
+    wristMech = new Wrist();
     intakeMech = new Intake();
-    gyro = new AHRS(Port.kUSB);
     driveTrain = new DriveTrain();
 
+    gyro = new AHRS(Port.kUSB);
   }
 
   /**
@@ -77,7 +80,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-
   }
 
   /**
@@ -85,7 +87,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-
   }
 
   @Override
@@ -102,7 +103,6 @@ public class Robot extends TimedRobot {
     wristMech.run();
     intakeMech.run();
     driveTrain.run();
-
   }
 
   /**
@@ -110,6 +110,5 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-
   }
 }
