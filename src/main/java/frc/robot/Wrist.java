@@ -160,6 +160,5 @@ public class Wrist extends Thread{
         SmartDashboard.putNumber("WRIST HOLD POS", holdPos);
         SmartDashboard.putBoolean("HOLD WRIST?", holdEnabled);
         SmartDashboard.putNumber("WRIST MOTOR TEMP", wristSparkMax.getMotorTemperature());
-
     }
 }
