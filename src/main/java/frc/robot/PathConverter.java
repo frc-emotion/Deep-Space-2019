@@ -40,7 +40,7 @@ public class PathConverter {
     public Notifier notifier;
 
     public PathConverter(DriveTrain driveTrain, Trajectory traj) {
-        allowDrive = false;
+        allowDrive = true;
         this.driveTrain = driveTrain;
         this.traj = traj;
 

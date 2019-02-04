@@ -1,5 +1,6 @@
 package frc.robot;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.revrobotics.CANEncoder;
@@ -7,11 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
 
 /**
  * Class that runs the Drive Train
@@ -40,7 +44,12 @@ public class DriveTrain {
 
     private double drivePower, driveExponent;
 
+    // pathfinder helper object
+    private PathConverter pathConverter;
+    private boolean pathDone;
+
     public DriveTrain() {
+        pathDone = false;
         // drive power (max 1)
         drivePower = 0.7;
         // deadzone exponent
@@ -92,14 +101,45 @@ public class DriveTrain {
     public void run() {
         workShuffleBoard();
 
-        int choice = pathChoices.getSelected();
-        switch (choice) {
+        if (!pathDone) {
+            runPathFinder();
+            pathDone = true;
+        }
+        if (pathConverter.isDriveAllowed())
+            manualDrive();
+    }
+
+    /**
+     * Runs pathfinder, no matter what choice.
+     */
+    public void runPathFinder() {
+        int pathChoice = pathChoices.getSelected().intValue();
+        String pathName = "";
+
+        switch (pathChoice) {
         case 0:
-            // pathfinder to be implemented later
+            pathName = "righthab";
+            break;
+        case 1:
+            pathName = "straighthab";
             break;
         default:
-            manualDrive();
+            // do nothing
             break;
+        }
+
+        if (!pathName.equals("")) {
+            String dir = Filesystem.getDeployDirectory().toString();
+            String fileName = pathName + ".pf1.csv";
+
+            File trajFile = new File(dir + "/" + fileName);
+
+            Trajectory traj = Pathfinder.readFromCSV(trajFile);
+
+            pathConverter = new PathConverter(this, traj);
+            pathConverter.setUpFollowers();
+
+            pathConverter.followPath();
         }
     }
 
@@ -194,6 +234,7 @@ public class DriveTrain {
         pathChoices.setDefaultOption("No Path", -1);
         // this is just a place holder till we get the real paths
         pathChoices.addOption("Sample Right Hab", 0);
+        pathChoices.addOption("Sample Straight Hab", 1);
         SmartDashboard.putData("PathFinder Choices", pathChoices);
     }
 
@@ -217,7 +258,7 @@ public class DriveTrain {
     /**
      * @return the robot's differential drive
      */
-    public DifferentialDrive getDrive(){
+    public DifferentialDrive getDrive() {
         return drive;
     }
 
