@@ -70,7 +70,6 @@ public class Wrist extends Thread{
             macroEnabled = false;
             disableMacros();
             wristPidControl.cleanup();
-       
             manualMove();
           }
           else if(Robot.operatorController.getAButtonPressed()){ // macro pick up hatch from the ground
