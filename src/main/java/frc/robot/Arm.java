@@ -166,6 +166,5 @@ public class Arm extends Thread{
         SmartDashboard.putNumber("ARM HOLD POS", holdPos);
         SmartDashboard.putBoolean("HOLD?", holdEnabled);
         SmartDashboard.putNumber("ARM MOTOR TEMP", armSparkMax.getMotorTemperature());
-ssi dont ijs
     }
 }
