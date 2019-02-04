@@ -23,11 +23,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  
   public static XboxController driveController;
   public static XboxController operatorController;
+  // Nav-X Gyro
   public static AHRS gyro;
-  
+  DriveTrain driveTrain;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OP_CONTROLLER_PORT);
     gyro = new AHRS(Port.kUSB);
+    driveTrain = new DriveTrain();
   }
 
   /**
@@ -88,8 +90,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
-
+    driveTrain.run();
   }
 
   /**
@@ -97,6 +98,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
-    
+
   }
 }
