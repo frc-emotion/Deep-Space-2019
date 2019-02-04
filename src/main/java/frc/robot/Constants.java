@@ -10,7 +10,7 @@ public class Constants{
     public static final int MAX_CURRENT = 35;
     
     /* Number of encoder ticks per Neo revolution */
-    public static final double ENCODER_REV = 42; 
+    public static final int ENCODER_REV = 42; 
 
     /* Port numbers for drivetrain Neos */
     public static final int DT_CAN_RA_PORT = 1;
@@ -19,4 +19,10 @@ public class Constants{
     public static final int DT_CAN_LA_PORT = 4;
     public static final int DT_CAN_LB_PORT = 5;
     public static final int DT_CAN_LC_PORT = 6;
+
+    /* Constants for PathFinder in metric units */
+    public static double WHEELBASE_WIDTH = 0.6898513;
+    public static double WHEEL_DIAMETER = 0;
+    public static double MAX_VELOCITY = 0;
+
 }

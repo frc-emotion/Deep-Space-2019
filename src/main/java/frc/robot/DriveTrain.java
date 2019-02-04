@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * 
  * @author Gokul Swaminathan
  */
-
 public class DriveTrain {
 
     // All the drivetrain spark maxes
@@ -184,6 +183,8 @@ public class DriveTrain {
         SmartDashboard.putNumber("Drive Power", drivePower);
         SmartDashboard.putNumber("Drive Exponent", driveExponent);
 
+        SmartDashboard.putString("Pathfinder Job", "Finished");
+
         driveChoices = new SendableChooser<Integer>();
         driveChoices.setDefaultOption("Tank Drive", -1);
         driveChoices.addOption("Arcade Drive", 0);
@@ -211,6 +212,13 @@ public class DriveTrain {
             String label = "Spark Max" + spark.getDeviceId() + "Temp. (C)";
             SmartDashboard.putNumber(label, spark.getMotorTemperature());
         }
+    }
+
+    /**
+     * @return the robot's differential drive
+     */
+    public DifferentialDrive getDrive(){
+        return drive;
     }
 
 }
