@@ -7,8 +7,11 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +25,7 @@ public class Robot extends TimedRobot {
   
   public static XboxController driveController;
   public static XboxController operatorController;
+  public static AHRS gyro;
   
   /**
    * This function is run when the robot is first started up and should be used
@@ -31,8 +35,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OP_CONTROLLER_PORT);
-
-
+    gyro = new AHRS(Port.kUSB);
   }
 
   /**
