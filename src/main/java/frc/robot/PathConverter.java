@@ -123,8 +123,7 @@ public class PathConverter {
             r = constant * rFollower.calculate((int) driveTrain.getDriveEncoder('r').getPosition());
 
             // calculate angle heading
-            //this is where gyro code is supposed to be, but its 0 to produce no Travis errors.
-            gyro_heading = 0;
+            gyro_heading = Robot.gyro.getAngle();
             desired_heading = Pathfinder.r2d(lFollower.getHeading());
             angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
             kG = 5 * (-1.0 / 80.0);
