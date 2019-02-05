@@ -131,6 +131,8 @@ public class PathConverter {
 
             // run values through tankdrive
             driveTrain.getDrive().tankDrive((l - turn), (r + turn));
+
+            workShuffleBoard();
         }
 
     }
@@ -173,5 +175,18 @@ public class PathConverter {
      */
     public boolean isDriveAllowed() {
         return allowDrive;
+    }
+
+    /**
+     * Updates dashboard values
+     */
+    private void workShuffleBoard() {
+        SmartDashboard.putNumber("Right Drive Encoder Position", driveTrain.getDriveEncoder('r').getPosition());
+        SmartDashboard.putNumber("Right Drive Encoder Velocity (rpm)", driveTrain.getDriveEncoder('r').getVelocity());
+
+        SmartDashboard.putNumber("Left Drive Encoder Position", driveTrain.getDriveEncoder('l').getPosition());
+        SmartDashboard.putNumber("Left Drive Encoder Velocity (rpm)", driveTrain.getDriveEncoder('l').getVelocity());
+
+        SmartDashboard.putNumber("Nav-X Angle", Robot.gyro.getAngle());
     }
 }

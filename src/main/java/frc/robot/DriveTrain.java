@@ -101,16 +101,33 @@ public class DriveTrain {
     public void run() {
         workShuffleBoard();
 
+        int driveChoice = driveChoices.getSelected();
+        switch (driveChoice) {
+        case 0:
+            runPathFinderChoices();
+            break;
+        default:
+            runTankDrive();
+            break;
+        }
+    }
+
+    /**
+     * Contains the logic that it will only do pathfinder once, and will only go to
+     * manual drive after pathfinder.
+     */
+    private void runPathFinderChoices() {
         if (!pathDone) {
             runPathFinder();
             pathDone = true;
         }
         if (pathConverter.isDriveAllowed())
-            manualDrive();
+            runTankDrive();
     }
 
     /**
-     * Runs pathfinder, no matter what choice.
+     * Imports csv and converts it to trajectory, then passing in the trajectory to
+     * the PathConverter object.
      */
     public void runPathFinder() {
         int pathChoice = pathChoices.getSelected().intValue();
@@ -140,22 +157,6 @@ public class DriveTrain {
             pathConverter.setUpFollowers();
 
             pathConverter.followPath();
-        }
-    }
-
-    /**
-     * Runs the manual drive. There is a choice between arcade or tank. Tank is
-     * default.
-     */
-    private void manualDrive() {
-        int choice = driveChoices.getSelected();
-        switch (choice) {
-        case 0:
-            runArcadeDrive();
-            break;
-        default:
-            runTankDrive();
-            break;
         }
     }
 
@@ -223,11 +224,11 @@ public class DriveTrain {
         SmartDashboard.putNumber("Drive Power", drivePower);
         SmartDashboard.putNumber("Drive Exponent", driveExponent);
 
-        SmartDashboard.putString("Pathfinder Job", "Finished");
+        SmartDashboard.putString("Pathfinder Job", "NotFinished");
 
         driveChoices = new SendableChooser<Integer>();
         driveChoices.setDefaultOption("Tank Drive", -1);
-        driveChoices.addOption("Arcade Drive", 0);
+        driveChoices.addOption("PathFinder + Tank Drive", 0);
         SmartDashboard.putData("Drive Choices", driveChoices);
 
         pathChoices = new SendableChooser<Integer>();
