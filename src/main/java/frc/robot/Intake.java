@@ -47,6 +47,9 @@ public class Intake extends Thread{
         else if(Robot.operatorController.getTriggerAxis(Hand.kLeft) >= deadzone){
             intakeIn(Robot.operatorController.getTriggerAxis(Hand.kLeft));
         }
+        else{
+            stopIntake();
+        }
 
     }
 
@@ -82,6 +85,15 @@ public class Intake extends Thread{
 
     }
 
+    /**
+     * Disables all power to intake spark maxes.
+     *  
+     * @return void
+     */
+    public void stopIntake(){
+        intakeSparkR.set(0);
+        intakeSparkL.set(0);
+    }
 
 
 }

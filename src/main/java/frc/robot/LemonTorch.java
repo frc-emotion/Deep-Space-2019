@@ -4,11 +4,11 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class LemonTorch extends Thread{
+public class LemonTorch{
     private NetworkTable dataTable; // main table from limelight 
     private NetworkTableEntry tXBall, tYBall, tABall, tVBall; // network table entries from the main network table
     private double errorXBall = 0, errorYBall = 0 , areaBall = 0, ballFound = 0;
-    PIDControl lemonPidControl;
+
     private boolean gatsby; //green light 
 
     public LemonTorch(){
@@ -20,7 +20,6 @@ public class LemonTorch extends Thread{
         tVBall = dataTable.getEntry("tv");
         dataTable.getEntry("ledMode").setNumber(3); // set green light to be off
         
-        lemonPidControl = new PIDControl(0, 0, 0);
     }
 
     public void toggleLight(){ // turn limelight led on or off
@@ -38,10 +37,16 @@ public class LemonTorch extends Thread{
 
     }
 
-    @Override
-    public void run() {
-        
+    /**
+	 * update all values (sd + network tables)
+	 * @return void
+	 */
+    public void update(){
+        updateTableValues();
+        updateSmartDashboard();
     }
+
+    
     /**
 	 * update local values from limelight network tables 
 	 * x, y, area, v
