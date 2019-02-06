@@ -96,4 +96,13 @@ public class Intake extends Thread{
     }
 
 
+    /**
+     * Releases hatch mechanism by activating pnuematics.
+     *  
+     * @return void
+     */
+    public void releaseHatch(){
+
+    }
+
 }
