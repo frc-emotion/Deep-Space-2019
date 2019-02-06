@@ -9,8 +9,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -21,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-  
+  public Wrist wrist;
   public static XboxController driveController;
   public static XboxController operatorController;
   /**
@@ -30,6 +28,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    wrist= new Wrist();
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
 
@@ -84,7 +83,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    
+    wrist.run();
 
   }
 
