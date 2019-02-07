@@ -27,13 +27,18 @@ public class Constants{
     public static final int DT_CAN_LB_PORT = 5;
     public static final int DT_CAN_LC_PORT = 6;
 
-
-    //=======================================================
-
+    //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
+	/*********************PORTS **********************/
+    //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
+    //Intake pneumatics ports from PCM. Double solenoids, so 2 ports per side
+    public static final int INTAKE_SOL_R_FWD = 0;
+    public static final int INTAKE_SOL_R_BWD = 1;
+    public static final int INTAKE_SOL_L_FWD = 2;
+    public static final int INTAKE_SOL_L_BWD = 3;
 
 
     //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
-	/*********************OTHER**********************/
+	/*********************OTHER **********************/
 	//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     
     /* Max Currents that can be sent to Neos in Amps */
@@ -41,8 +46,7 @@ public class Constants{
     public static final int MAX_WRIST_CURRENT = 20;
 
 
-    //================================================
-
+    
 
 
 
@@ -59,7 +63,7 @@ public class Constants{
     public static double WHEEL_DIAMETER = 0.1524;
     public static double MAX_VELOCITY = 2;
 
-    //======================================================
+    
 
 
 }

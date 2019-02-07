@@ -3,6 +3,7 @@ package frc.robot;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
@@ -17,7 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Intake extends Thread{
 
-    CANSparkMax intakeSparkR, intakeSparkL;
+    CANSparkMax intakeSparkR, intakeSparkL; // intake wheels
+    DoubleSolenoid solR, solL; // hatch pushing solenoids
     double deadzone = 0.1; // joystick trigger threshold for when to activate intake. This is done so intake doesnt activate accidentally.
 
     /**
@@ -30,6 +32,9 @@ public class Intake extends Thread{
 
         intakeSparkR.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
         intakeSparkL.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
+
+        solR = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BWD);
+        solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
         updateSmartDashboard();
     }
 
