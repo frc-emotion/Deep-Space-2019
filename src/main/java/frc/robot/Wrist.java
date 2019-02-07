@@ -25,10 +25,11 @@ public class Wrist extends Thread{
     int[] macroCheck = new int[6]; // this list tracks which macro is enabled. A switch statement in the run loop checks which macro is running
     double[] macroPosList = new double[6]; // store which positions wrist needs to go to for macros.
     double startEncoderVal = 0; // stores initial encoder value if wrist encoder doesnt reset.
+    double wristSpeedScale = 0.5;
 
     public Wrist(){
         wristSparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
-        wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
+        wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_WRIST_CURRENT); // set a current limit
 
         wristEncoder = new CANEncoder(wristSparkMax);
         
@@ -105,11 +106,11 @@ public class Wrist extends Thread{
      */
     public void manualMove(){
         double inputVal = Robot.operatorController.getY(Hand.kRight);
-        if(Robot.operatorController.getY(Hand.kRight) > 0){ // if the wrist is moving up, scale down inputs 
-            inputVal *= 0.5f;
-        }
+        // if(Robot.operatorController.getY(Hand.kRight) > 0){ // if the wrist is moving up, scale down inputs 
+        //     inputVal *= 0.5f;
+        // }
 
-        wristSparkMax.set(inputVal);
+        wristSparkMax.set(inputVal*wristSpeedScale);
         
     }
 

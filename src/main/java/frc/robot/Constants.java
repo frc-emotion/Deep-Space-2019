@@ -21,6 +21,7 @@ public class Constants{
 
     /* Max Current that can be sent to Neos in Amps */
     public static final int MAX_CURRENT = 35;
+    public static final int MAX_WRIST_CURRENT = 20;
     
     /* Number of encoder ticks per Neo revolution */
     public static final int ENCODER_REV = 42; 
