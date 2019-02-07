@@ -50,6 +50,8 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
 
     gyro = new AHRS(Port.kUSB);
+
+    updateSmartDashboard();
   }
 
   /**
@@ -63,7 +65,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
+    
   }
 
   /**
@@ -103,6 +105,15 @@ public class Robot extends TimedRobot {
     wristMech.run();
     intakeMech.run();
     driveTrain.run();
+    updateSmartDashboard();
+  }
+
+   /**
+   * Update smartdashboard values of static robot objs
+   * @return void
+   */
+  public void updateSmartDashboard(){
+    SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
   }
 
   /**
