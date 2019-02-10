@@ -34,6 +34,7 @@ public class Arm extends Thread {
 
   public Arm() {
     armSparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
+    armSparkMax.setSmartCurrentLimit(Constants.MAX_CURRENT);
     armSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
 
     armEncoder = new CANEncoder(armSparkMax);

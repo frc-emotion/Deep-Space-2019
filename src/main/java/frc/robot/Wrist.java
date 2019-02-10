@@ -29,6 +29,7 @@ public class Wrist extends Thread{
 
     public Wrist(){
         wristSparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
+        wristSparkMax.setSmartCurrentLimit(Constants.MAX_WRIST_CURRENT);
         wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_WRIST_CURRENT); // set a current limit
 
         wristEncoder = new CANEncoder(wristSparkMax);
