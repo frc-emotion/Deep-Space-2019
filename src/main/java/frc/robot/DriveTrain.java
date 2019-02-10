@@ -48,12 +48,9 @@ public class DriveTrain {
     private PathConverter pathConverter;
     private boolean pathDone;
 
-
-    //pid controls
+    // pid controls
     private PIDControl lemonPidControl;
     private PIDControl gyroPidControl;
-    
-    
 
     public DriveTrain() {
         pathDone = false;
@@ -98,13 +95,12 @@ public class DriveTrain {
         rSpeedGroup = new SpeedControllerGroup(rSparkMaxA, rSparkMaxB, rSparkMaxC);
         lSpeedGroup = new SpeedControllerGroup(lSparkMaxA, lSparkMaxB, lSparkMaxC);
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
-        
+
         // add pid controllers from sensors
         lemonPidControl = new PIDControl(0, 0, 0);
         lemonPidControl.setScale(.01);
 
         gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
-    
 
         initShuffleBoard();
     }
@@ -118,8 +114,11 @@ public class DriveTrain {
         int driveChoice = driveChoices.getSelected();
         switch (driveChoice) {
         case 0:
-            runPathFinderChoices();
+            // Lets worry about this after drive train works
+            // runPathFinderChoices();
             break;
+        case 1:
+            runArcadeDrive();
         default:
             runTankDrive();
             break;
@@ -243,6 +242,7 @@ public class DriveTrain {
         driveChoices = new SendableChooser<Integer>();
         driveChoices.setDefaultOption("Tank Drive", -1);
         driveChoices.addOption("PathFinder + Tank Drive", 0);
+        driveChoices.addOption("Arcade Drive", 1);
         SmartDashboard.putData("Drive Choices", driveChoices);
 
         pathChoices = new SendableChooser<Integer>();

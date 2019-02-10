@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -31,8 +32,9 @@ public class Wrist extends Thread{
         wristSparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
         wristSparkMax.setSmartCurrentLimit(Constants.MAX_WRIST_CURRENT);
         wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_WRIST_CURRENT); // set a current limit
+        wristSparkMax.setIdleMode(IdleMode.kBrake);
 
-        wristEncoder = new CANEncoder(wristSparkMax);
+        wristEncoder = wristSparkMax.getEncoder();
         
         wristPidControl = new PIDControl(1f, 0f, 0f); // configure wrist pid tuning values
         wristPidControl.setScale(1.0/200.0); // scale down values 

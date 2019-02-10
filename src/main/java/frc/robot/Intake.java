@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -30,8 +31,12 @@ public class Intake extends Thread{
         intakeSparkR = new CANSparkMax(Constants.INTAKE_SPARK_CID_R, MotorType.kBrushless);
         intakeSparkL = new CANSparkMax(Constants.INTAKE_SPARK_CID_L, MotorType.kBrushless);
 
+        intakeSparkL.setSmartCurrentLimit(Constants.MAX_CURRENT);
+        intakeSparkR.setSmartCurrentLimit(Constants.MAX_CURRENT);
         intakeSparkR.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
         intakeSparkL.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
+        intakeSparkL.setIdleMode(IdleMode.kBrake);
+        intakeSparkR.setIdleMode(IdleMode.kBrake);
 
         solR = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BWD);
         solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);

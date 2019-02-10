@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -36,8 +37,8 @@ public class Arm extends Thread {
     armSparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
     armSparkMax.setSmartCurrentLimit(Constants.MAX_CURRENT);
     armSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
-
-    armEncoder = new CANEncoder(armSparkMax);
+    armSparkMax.setIdleMode(IdleMode.kBrake);
+    armEncoder = armSparkMax.getEncoder();
     startEncoderVal = armEncoder.getPosition(); // get the inital encoder val just incase it doesnt start from zero
 
     armPidControl = new PIDControl(1f, 0f, 0f); // configure arm pid tuning values
