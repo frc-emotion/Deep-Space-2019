@@ -90,15 +90,15 @@ public class Wrist extends Thread{
           }
           else{ // if no input is being passed in 
             if(holdEnabled && !macroEnabled){ // if hold mode is activated use pid to go the the last recorded encoder position
-              wristSparkMax.set(wristPidControl.getValue(holdPos, wristEncoder.getPosition())); 
+              //wristSparkMax.set(wristPidControl.getValue(holdPos, wristEncoder.getPosition())); 
             }
           }
           
           //get which macro is currently enabled
-          int toggled = getToggled();
-          if(toggled != -1 && macroEnabled){
-              wristSparkMax.set(wristPidControl.getValue(macroPosList[toggled], wristEncoder.getPosition()));
-          }
+          // int toggled = getToggled();
+          // if(toggled != -1 && macroEnabled){
+          //     wristSparkMax.set(wristPidControl.getValue(macroPosList[toggled], wristEncoder.getPosition()));
+          // }
     }
     /**
      * Move the wrist manully using the operator xbox controller.

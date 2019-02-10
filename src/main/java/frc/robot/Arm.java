@@ -95,14 +95,14 @@ public class Arm extends Thread {
     } else { // if no input is being passed in
       if (holdEnabled && !macroEnabled) { // if hold mode is activated use pid to go the the last recorded encoder
                                           // position
-        armSparkMax.set(armPidControl.getValue(holdPos, armEncoder.getPosition()));
+        //armSparkMax.set(armPidControl.getValue(holdPos, armEncoder.getPosition()));
       }
     }
 
-    int toggled = getToggled();
-    if (toggled != -1 && macroEnabled) {
-      armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
-    }
+    // int toggled = getToggled();
+    // if (toggled != -1 && macroEnabled) {
+    //   armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
+    // }
 
   }
 
