@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
   DriveTrain driveTrain;
 
   // Nav-X Gyro
-  public static AHRS gyro;
+  //public static AHRS gyro;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
 
-    gyro = new AHRS(Port.kUSB);
+    //gyro = new AHRS(Port.kUSB);
 
     updateSmartDashboard();
   }
@@ -113,7 +113,7 @@ public class Robot extends TimedRobot {
    * @return void
    */
   public void updateSmartDashboard(){
-    SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
+    //SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
   }
 
   /**

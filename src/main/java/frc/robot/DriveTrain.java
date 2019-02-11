@@ -45,7 +45,7 @@ public class DriveTrain {
     private double drivePower, driveExponent;
 
     // pathfinder helper object
-    private PathConverter pathConverter;
+    //private PathConverter pathConverter;
     private boolean pathDone;
 
     // pid controls
@@ -66,7 +66,7 @@ public class DriveTrain {
         rSparkMaxC = new CANSparkMax(Constants.DT_CAN_RC_PORT, MotorType.kBrushless);
         lSparkMaxA = new CANSparkMax(Constants.DT_CAN_LA_PORT, MotorType.kBrushless);
         lSparkMaxB = new CANSparkMax(Constants.DT_CAN_LB_PORT, MotorType.kBrushless);
-        lSparkMaxB = new CANSparkMax(Constants.DT_CAN_LC_PORT, MotorType.kBrushless);
+        lSparkMaxC = new CANSparkMax(Constants.DT_CAN_LC_PORT, MotorType.kBrushless);
 
         // grab encoders from sparkmax
         lEncoder = lSparkMaxA.getEncoder();
@@ -112,17 +112,18 @@ public class DriveTrain {
         workShuffleBoard();
 
         int driveChoice = driveChoices.getSelected();
-        switch (driveChoice) {
-        case 0:
-            // Lets worry about this after drive train works
-            // runPathFinderChoices();
-            break;
-        case 1:
-            runArcadeDrive();
-        default:
-            runTankDrive();
-            break;
-        }
+        // switch (driveChoice) {
+        // case 0:
+        //     // Lets worry about this after drive train works
+        //     // runPathFinderChoices();
+        //     break;
+        // case 1:
+        //     runArcadeDrive();
+        // default:
+        //     runTankDrive();
+        //     break;
+        // }
+        runTankDrive();
     }
 
     /**
@@ -134,8 +135,8 @@ public class DriveTrain {
             runPathFinder();
             pathDone = true;
         }
-        if (pathConverter.isDriveAllowed())
-            runTankDrive();
+        // if (pathConverter.isDriveAllowed())
+        //     runTankDrive();
     }
 
     /**
@@ -166,10 +167,10 @@ public class DriveTrain {
 
             Trajectory traj = Pathfinder.readFromCSV(trajFile);
 
-            pathConverter = new PathConverter(this, traj);
-            pathConverter.setUpFollowers();
+            //pathConverter = new PathConverter(this, traj);
+            //pathConverter.setUpFollowers();
 
-            pathConverter.followPath();
+            //pathConverter.followPath();
         }
     }
 
