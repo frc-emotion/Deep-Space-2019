@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Thread{
 
     CANSparkMax intakeSparkR, intakeSparkL; // intake wheels
-    DoubleSolenoid solR, solL; // hatch pushing solenoids
+    //DoubleSolenoid solR, solL; // hatch pushing solenoids
     double deadzone = 0.1; // joystick trigger threshold for when to activate intake. This is done so intake doesnt activate accidentally.
 
     /**
@@ -38,8 +38,8 @@ public class Intake extends Thread{
         intakeSparkL.setIdleMode(IdleMode.kBrake);
         intakeSparkR.setIdleMode(IdleMode.kBrake);
 
-        solR = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BWD);
-        solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
+        // solR = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BWD);
+        // solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
         updateSmartDashboard();
     }
 
