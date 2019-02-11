@@ -189,7 +189,7 @@ public class DriveTrain {
      */
     void runTankDrive() {
         // constants to easily configure if drive is opposite
-        int constR = -1, constL = -1;
+        int constR = 1, constL = 1;
 
         double rAxis = Robot.driveController.getY(Hand.kRight);
         double lAxis = Robot.driveController.getY(Hand.kLeft);
