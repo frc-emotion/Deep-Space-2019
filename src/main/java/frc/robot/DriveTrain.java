@@ -97,10 +97,10 @@ public class DriveTrain {
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
 
         // add pid controllers from sensors
-        lemonPidControl = new PIDControl(0, 0, 0);
-        lemonPidControl.setScale(.01);
+        //lemonPidControl = new PIDControl(0, 0, 0);
+        //lemonPidControl.setScale(.01);
 
-        gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
+        //gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
 
         initShuffleBoard();
     }
