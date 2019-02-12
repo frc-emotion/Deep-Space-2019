@@ -115,11 +115,7 @@ public class Arm extends Thread {
    */
   public void manualMove() {
     double inputVal = Robot.operatorController.getY(Hand.kLeft);
-    if (Robot.operatorController.getY(Hand.kLeft) > 0) { // if the arm is moving up, scale down inputs
-      inputVal *= 0.5f;
-    }
-
-    armSparkMax.set(inputVal);
+    armSparkMax.set(inputVal*Constants.ARM_PWR_SCALE); // scale arm speed down in both directions
 
   }
 

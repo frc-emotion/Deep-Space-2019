@@ -109,11 +109,7 @@ public class Wrist extends Thread{
      */
     public void manualMove(){
         double inputVal = Robot.operatorController.getY(Hand.kRight);
-        // if(Robot.operatorController.getY(Hand.kRight) > 0){ // if the wrist is moving up, scale down inputs 
-        //     inputVal *= 0.5f;
-        // }
-
-        wristSparkMax.set(inputVal*wristSpeedScale);
+        wristSparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
         
     }
 

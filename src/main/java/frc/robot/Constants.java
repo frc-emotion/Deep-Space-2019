@@ -42,6 +42,11 @@ public class Constants {
     public static final int MAX_CURRENT = 35;
     public static final int MAX_WRIST_CURRENT = 20;
 
+    public static final double WRIST_PWR_SCALE = 0.5;
+    public static final double ARM_PWR_SCALE = 0.5;
+
+
+
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
     /********************* PATHFINDER **********************/
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
