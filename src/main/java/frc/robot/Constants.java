@@ -30,9 +30,9 @@ public class Constants {
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     // Intake pneumatics ports from PCM. Double solenoids, so 2 ports per side
     public static final int INTAKE_SOL_R_FWD = 0;
-    public static final int INTAKE_SOL_R_BWD = 1;
+    public static final int INTAKE_SOL_R_BKWD = 1;
     public static final int INTAKE_SOL_L_FWD = 2;
-    public static final int INTAKE_SOL_L_BWD = 3;
+    public static final int INTAKE_SOL_L_BKWD = 3;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     /********************* OTHER **********************/
