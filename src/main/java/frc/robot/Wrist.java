@@ -109,7 +109,8 @@ public class Wrist extends Thread{
      */
     public void manualMove(){
         double inputVal = Robot.operatorController.getY(Hand.kRight);
-        wristSparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
+        if(wristEncoder.getPosition() >= startEncoderVal) // softstop for the wrist.
+          wristSparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
         
     }
 
