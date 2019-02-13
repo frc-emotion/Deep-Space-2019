@@ -33,6 +33,7 @@ public class Robot extends TimedRobot {
   Wrist wristMech;
   Intake intakeMech;
   DriveTrain driveTrain;
+  //RobotFlipper flipMech;
 
   // Nav-X Gyro
   //public static AHRS gyro;
@@ -51,6 +52,7 @@ public class Robot extends TimedRobot {
     wristMech = new Wrist();
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
+    //flipMech = new RobotFlipper();
 
     //gyro = new AHRS(Port.kUSB);
 
@@ -108,6 +110,7 @@ public class Robot extends TimedRobot {
     wristMech.run();
     intakeMech.run();
     driveTrain.run();
+    //flipMech.run():
     updateSmartDashboard();
   }
 

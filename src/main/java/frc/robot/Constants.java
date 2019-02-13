@@ -27,12 +27,12 @@ public class Constants {
     public static final int DT_CAN_LC_PORT = 3;
 
     // Climb Motors
-    public static final int CLIMB_SPARK_CID_A = 101;
-    public static final int CLIMB_SPARK_CID_B = 100;
-    public static final int CLIMBER_CONTROLLER_AXIS = -1;
+    public static final int CLIMB_SPARK_CID_A = 101; // temporary
+    public static final int CLIMB_SPARK_CID_B = 100; // temporary
+    public static final int CLIMBER_CONTROLLER_AXIS = -1;// temporary
 
     // Screw Motor
-    public static final int SCREW_TALON_CID = 102;
+    public static final int SCREW_TALON_CID = 102;// temporary
     public static final double SCREW_SPEED = 0.5;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
@@ -55,15 +55,13 @@ public class Constants {
     public static final double WRIST_PWR_SCALE = 0.5;
     public static final double ARM_PWR_SCALE = 0.6;
 
-
-
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
     /********************* PATHFINDER **********************/
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
 
     /* Number of encoder ticks per Neo revolution */
-    //NEED TO CHANGE THIS
-    public static final int ENCODER_REV = 42;
+    // NEED TO CHANGE THIS
+    public static final int ENCODER_REV = 42;// temporary
 
     /* Constants for PathFinder in metric units */
     public static double WHEELBASE_WIDTH = 0.6898513;
