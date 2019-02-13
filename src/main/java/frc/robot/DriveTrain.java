@@ -73,7 +73,7 @@ public class DriveTrain {
         rEncoder = rSparkMaxA.getEncoder();
 
         // create arraylist of motor controllers to make current limiting easier
-        driveSparkMaxes = new ArrayList<>() {
+        driveSparkMaxes = new ArrayList<CANSparkMax>() {
             {
                 add(rSparkMaxA);
                 add(rSparkMaxB);
@@ -86,7 +86,6 @@ public class DriveTrain {
 
         // set spark currents
         for (CANSparkMax spark : driveSparkMaxes) {
-            // Has shown to produce some bugs, we do not know yet
             spark.setSmartCurrentLimit(Constants.MAX_CURRENT);
             spark.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
             spark.setIdleMode(IdleMode.kBrake);

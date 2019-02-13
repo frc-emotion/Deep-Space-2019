@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SerialPort.Port;
@@ -25,6 +26,7 @@ public class Robot extends TimedRobot {
 
   public static XboxController driveController;
   public static XboxController operatorController;
+  public static Joystick climbController;
 
   // Mechs
   Arm armMech;
@@ -43,6 +45,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
+    climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
 
     armMech = new Arm();
     wristMech = new Wrist();

@@ -4,6 +4,7 @@ public class Constants {
 
     public static final int DRIVE_CONTROLLER_PORT = 0;
     public static final int OPER_CONTROLLER_PORT = 1;
+    public static final int CLIMB_CONTROLLER_PORT = 3;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\
     /********************* CAN BUS IDs **********************/
@@ -24,6 +25,15 @@ public class Constants {
     public static final int DT_CAN_LA_PORT = 5;
     public static final int DT_CAN_LB_PORT = 4;
     public static final int DT_CAN_LC_PORT = 3;
+
+    // Climb Motors
+    public static final int CLIMB_SPARK_CID_A = 101;
+    public static final int CLIMB_SPARK_CID_B = 100;
+    public static final int CLIMBER_CONTROLLER_AXIS = -1;
+
+    // Screw Motor
+    public static final int SCREW_TALON_CID = 102;
+    public static final double SCREW_SPEED = 0.5;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     /********************* PORTS **********************/
@@ -52,6 +62,7 @@ public class Constants {
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
 
     /* Number of encoder ticks per Neo revolution */
+    //NEED TO CHANGE THIS
     public static final int ENCODER_REV = 42;
 
     /* Constants for PathFinder in metric units */
