@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Operation: Left joystick on operator controller.
  * <p>
  * Notes: Arm is limited to 30A current and is limited to half speed for now.
- * Macro logic is commented out.
+ * Macro logic is commented out. In the future the arm should extend an abstract pivot class.
  *
  * <p>
  * Bugs: Hopefully none!
@@ -22,9 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Neal
  */
 public class Arm extends Thread {
-  CANSparkMax armSparkMax; // Spark Max controller from REV Robotics. Controls NEO motor
-  CANEncoder armEncoder; // arm encoder, built into the NEO
-  PIDControl armPidControl;
+  CANSparkMax mySparkMax; // Spark Max controller from REV Robotics. Controls NEO motor
+  CANEncoder myEncoder; // arm encoder, built into the NEO
+  PIDControl pidControl;
   boolean holdEnabled = false, macroEnabled = false; // checks to see if the arm should hold its position or perform a
                                                      // macro
   double holdPos = 0; // store which position arm should hold
@@ -32,18 +32,18 @@ public class Arm extends Thread {
                                  // checks which macro is running
   double[] macroPosList = new double[4]; // store which positions arm needs to go to for macros.
   double startEncoderVal = 0; // stores initial encoder value if arm encoder doesnt reset.
-
+  
   public Arm() {
-    armSparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
-    armSparkMax.setSmartCurrentLimit(Constants.MAX_CURRENT);
-    armSparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
-    armSparkMax.setIdleMode(IdleMode.kBrake);
-    armEncoder = armSparkMax.getEncoder();
-    startEncoderVal = armEncoder.getPosition(); // get the inital encoder val just incase it doesnt start from zero
+    mySparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
+    mySparkMax.setSmartCurrentLimit(Constants.MAX_CURRENT);
+    mySparkMax.setSecondaryCurrentLimit(Constants.MAX_CURRENT); // set a current limit
+    mySparkMax.setIdleMode(IdleMode.kBrake);
+    myEncoder = mySparkMax.getEncoder();
+    startEncoderVal = myEncoder.getPosition(); // get the inital encoder val just incase it doesnt start from zero
 
-    armPidControl = new PIDControl(.014f, 0f, 0f); // configure arm pid tuning values
-    //armPidControl.setScale(1.0 / 200.0); // scale down values
-    armPidControl.setMaxSpeed(0.5); // set max speed while performing pid
+    pidControl = new PIDControl(.014f, 0f, 0f); // configure arm pid tuning values
+    //pidControl.setScale(1.0 / 200.0); // scale down values
+    pidControl.setMaxSpeed(0.5); // set max speed while performing pid
 
     // load all the macro values
     macroPosList[0] = startEncoderVal; // hatch from ground pos
@@ -69,8 +69,8 @@ public class Arm extends Thread {
     // has probably let go of the jstick
     // so activate the hold mode
     if (Math.abs(Robot.operatorController.getY(Hand.kLeft)) < 0.2 && !holdEnabled) {
-      holdPos = armEncoder.getPosition(); // get last position of the arm to hold at
-      armSparkMax.set(0); // send a stop signal
+      holdPos = myEncoder.getPosition(); // get last position of the arm to hold at
+      mySparkMax.set(0); // send a stop signal
       holdEnabled = true;
     }
 
@@ -81,7 +81,7 @@ public class Arm extends Thread {
       holdEnabled = false;
       macroEnabled = false;
       disableMacros();
-      armPidControl.cleanup();
+      pidControl.cleanup();
 
       manualMove();
     } else if (Robot.operatorController.getAButtonPressed()) { // macro pick up hatch from the ground
@@ -97,13 +97,13 @@ public class Arm extends Thread {
     } else { // if no input is being passed in
       if (holdEnabled && !macroEnabled) { // if hold mode is activated use pid to go the the last recorded encoder
                                           // position
-        armSparkMax.set(armPidControl.getValue(holdPos, armEncoder.getPosition()));
+        mySparkMax.set(pidControl.getValue(holdPos, myEncoder.getPosition()));
       }
     }
 
     int toggled = getToggled();
     if (toggled != -1 && macroEnabled) {
-      armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
+      mySparkMax.set(pidControl.getValue(macroPosList[toggled], myEncoder.getPosition()));
     }
 
   }
@@ -115,7 +115,7 @@ public class Arm extends Thread {
    */
   public void manualMove() {
     double inputVal = Robot.operatorController.getY(Hand.kLeft);
-    armSparkMax.set(inputVal*Constants.ARM_PWR_SCALE); // scale arm speed down in both directions
+    mySparkMax.set(inputVal*Constants.ARM_PWR_SCALE); // scale arm speed down in both directions
 
   }
 
@@ -167,9 +167,9 @@ public class Arm extends Thread {
    * @return void
    */
   public void updateSmartDashboard() {
-    SmartDashboard.putNumber("ARM ENCODER", armEncoder.getPosition());
+    SmartDashboard.putNumber("ARM ENCODER", myEncoder.getPosition());
     SmartDashboard.putNumber("ARM HOLD POS", holdPos);
     SmartDashboard.putBoolean("HOLD?", holdEnabled);
-    SmartDashboard.putNumber("ARM MOTOR TEMP", armSparkMax.getMotorTemperature());
+    SmartDashboard.putNumber("ARM MOTOR TEMP", mySparkMax.getMotorTemperature());
   }
 }

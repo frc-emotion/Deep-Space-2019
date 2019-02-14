@@ -18,27 +18,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * @author Neal
  */
 public class Wrist extends Thread{
-    CANSparkMax wristSparkMax; // Spark Max controller from REV Robotics. Controls NEO motor
-    CANEncoder wristEncoder; // wrist encoder, built into the NEO
-    PIDControl wristPidControl; 
+    CANSparkMax mySparkMax; // Spark Max controller from REV Robotics. Controls NEO motor
+    CANEncoder myEncoder; // wrist encoder, built into the NEO
+    PIDControl pidControl; 
     boolean holdEnabled = false, macroEnabled = false; // checks to see if the wrist should hold its position or perform a macro
     double holdPos = 0; // store which position wrist should hold
     int[] macroCheck = new int[6]; // this list tracks which macro is enabled. A switch statement in the run loop checks which macro is running
     double[] macroPosList = new double[6]; // store which positions wrist needs to go to for macros.
     double startEncoderVal = 0; // stores initial encoder value if wrist encoder doesnt reset.
-    double wristSpeedScale = 0.5;
-
+    
     public Wrist(){
-        wristSparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
-        wristSparkMax.setSmartCurrentLimit(Constants.MAX_WRIST_CURRENT);
-        wristSparkMax.setSecondaryCurrentLimit(Constants.MAX_WRIST_CURRENT); // set a current limit
-        wristSparkMax.setIdleMode(IdleMode.kBrake);
+        mySparkMax = new CANSparkMax(Constants.WRIST_SPARK_CID, MotorType.kBrushless);
+        mySparkMax.setSmartCurrentLimit(Constants.MAX_WRIST_CURRENT);
+        mySparkMax.setSecondaryCurrentLimit(Constants.MAX_WRIST_CURRENT); // set a current limit
+        mySparkMax.setIdleMode(IdleMode.kBrake);
 
-        wristEncoder = wristSparkMax.getEncoder();
+        myEncoder = mySparkMax.getEncoder();
         
-        wristPidControl = new PIDControl(.012f, 0.001f, 0f); // configure wrist pid tuning values
-        //wristPidControl.setScale(1.0/10.0); // scale down values 
-        wristPidControl.setMaxSpeed(0.6); // set max speed while performing pid
+        pidControl = new PIDControl(.012f, 0.001f, 0f); // configure wrist pid tuning values
+        //pidControl.setScale(1.0/10.0); // scale down values 
+        pidControl.setMaxSpeed(0.6); // set max speed while performing pid
 
         //load all the macro values
         macroPosList[0] = startEncoderVal; //hatch from ground pos
@@ -63,8 +62,8 @@ public class Wrist extends Thread{
          // if controller is under a threshold and not in hold mode, then the operator has probably let go of the jstick
         // so activate the hold mode
         if(Math.abs(Robot.operatorController.getY(Hand.kRight)) < 0.2 && !holdEnabled){ 
-            holdPos = wristEncoder.getPosition(); // get last position of the wrist to hold at
-            wristSparkMax.set(0); // send a stop signal
+            holdPos = myEncoder.getPosition(); // get last position of the wrist to hold at
+            mySparkMax.set(0); // send a stop signal
             holdEnabled = true; 
         }
         
@@ -73,7 +72,7 @@ public class Wrist extends Thread{
             holdEnabled = false;
             macroEnabled = false;
             disableMacros();
-            wristPidControl.cleanup();
+            pidControl.cleanup();
             manualMove();
           }
           else if(Robot.operatorController.getAButtonPressed()){ // macro pick up hatch from the ground
@@ -91,16 +90,19 @@ public class Wrist extends Thread{
           else if(Robot.operatorController.getBumperPressed(Hand.kRight)){ // macro to release hatch.
 
           }
+          else if(Robot.operatorController.getStartButtonPressed()){
+            startEncoderVal = myEncoder.getPosition();
+          }
           else{ // if no input is being passed in 
             if(holdEnabled && !macroEnabled){ // if hold mode is activated use pid to go the the last recorded encoder position
-              wristSparkMax.set(wristPidControl.getValue(holdPos, wristEncoder.getPosition())); 
+              mySparkMax.set(pidControl.getValue(holdPos, myEncoder.getPosition())); 
             }
           }
           
           //get which macro is currently enabled
           int toggled = getToggled();
           if(toggled != -1 && macroEnabled){
-              wristSparkMax.set(wristPidControl.getValue(macroPosList[toggled], wristEncoder.getPosition()));
+              mySparkMax.set(pidControl.getValue(macroPosList[toggled], myEncoder.getPosition()));
           }
     }
     /**
@@ -109,11 +111,11 @@ public class Wrist extends Thread{
      */
     public void manualMove(){
         double inputVal = Robot.operatorController.getY(Hand.kRight);
-        //if(wristEncoder.getPosition() >= -7) // softstop for the wrist.
-        wristSparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
+        //if(myEncoder.getPosition() >= -7) // softstop for the wrist.
+        mySparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
         //else{
-        //  if(wristEncoder.getPosition() < -7){
-        //   wristSparkMax.set(0.2);
+        //  if(myEncoder.getPosition() < -7){
+        //   mySparkMax.set(0.2);
         //  }
         //}
         
@@ -162,9 +164,9 @@ public class Wrist extends Thread{
      * @return void
      */
     public void updateSmartDashboard(){
-        SmartDashboard.putNumber("WRIST ENCODER", wristEncoder.getPosition());
+        SmartDashboard.putNumber("WRIST ENCODER", myEncoder.getPosition());
         SmartDashboard.putNumber("WRIST HOLD POS", holdPos);
         SmartDashboard.putBoolean("HOLD WRIST?", holdEnabled);
-        SmartDashboard.putNumber("WRIST MOTOR TEMP", wristSparkMax.getMotorTemperature());
+        SmartDashboard.putNumber("WRIST MOTOR TEMP", mySparkMax.getMotorTemperature());
     }
 }
