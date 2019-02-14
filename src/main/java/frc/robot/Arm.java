@@ -41,13 +41,13 @@ public class Arm extends Thread {
     armEncoder = armSparkMax.getEncoder();
     startEncoderVal = armEncoder.getPosition(); // get the inital encoder val just incase it doesnt start from zero
 
-    armPidControl = new PIDControl(1f, 0f, 0f); // configure arm pid tuning values
-    armPidControl.setScale(1.0 / 200.0); // scale down values
+    armPidControl = new PIDControl(.014f, 0f, 0f); // configure arm pid tuning values
+    //armPidControl.setScale(1.0 / 200.0); // scale down values
     armPidControl.setMaxSpeed(0.5); // set max speed while performing pid
 
     // load all the macro values
     macroPosList[0] = startEncoderVal; // hatch from ground pos
-    macroPosList[1] = startEncoderVal + 10.0; // bottom hatch placement
+    macroPosList[1] = startEncoderVal + 48; // bottom hatch placement
     macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
     macroPosList[3] = startEncoderVal + 30.0; // cargo into top rocket
 
@@ -85,26 +85,26 @@ public class Arm extends Thread {
 
       manualMove();
     } else if (Robot.operatorController.getAButtonPressed()) { // macro pick up hatch from the ground
-      toggleMacro(0);
+      //toggleMacro(0);
     } else if (Robot.operatorController.getBButtonPressed()) { // Bottom hatch placement
       toggleMacro(1);
     } else if (Robot.operatorController.getXButtonPressed()) { // macro for picking up cargo from loading zone
-      toggleMacro(2);
+      //toggleMacro(2);
     } else if (Robot.operatorController.getYButtonPressed()) { // macro for shooting ball in top rocket
-      toggleMacro(3);
+      //toggleMacro(3);
     } else if (Robot.operatorController.getBumperPressed(Hand.kRight)) { // macro to release hatch.
 
     } else { // if no input is being passed in
       if (holdEnabled && !macroEnabled) { // if hold mode is activated use pid to go the the last recorded encoder
                                           // position
-        //armSparkMax.set(armPidControl.getValue(holdPos, armEncoder.getPosition()));
+        armSparkMax.set(armPidControl.getValue(holdPos, armEncoder.getPosition()));
       }
     }
 
-    // int toggled = getToggled();
-    // if (toggled != -1 && macroEnabled) {
-    //   armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
-    // }
+    int toggled = getToggled();
+    if (toggled != -1 && macroEnabled) {
+      armSparkMax.set(armPidControl.getValue(macroPosList[toggled], armEncoder.getPosition()));
+    }
 
   }
 
