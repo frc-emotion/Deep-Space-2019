@@ -27,12 +27,12 @@ public class Constants {
     public static final int DT_CAN_LC_PORT = 3;
 
     // Climb Motors
-    public static final int CLIMB_SPARK_CID_A = 101; // temporary
-    public static final int CLIMB_SPARK_CID_B = 100; // temporary
-    public static final int CLIMBER_CONTROLLER_AXIS = -1;// temporary
+    public static final int CLIMB_SPARK_CID_A = 14; 
+    public static final int CLIMB_SPARK_CID_B = 6; 
+    public static final int CLIMBER_CONTROLLER_AXIS = 1;// temporary
 
     // Screw Motor
-    public static final int SCREW_TALON_CID = 102;// temporary
+    public static final int SCREW_TALON_CID = 15;// temporary
     public static final double SCREW_SPEED = 0.5;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//

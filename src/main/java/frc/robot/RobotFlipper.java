@@ -40,7 +40,7 @@ public class RobotFlipper {
     public RobotFlipper() {
         timer = new Timer();
         // drive power (max 1)
-        climbPower = 0.7;
+        climbPower = 0.5;
         // deadzone exponent
         climbExponent = 1.1;
         disableScrew = false;
@@ -76,26 +76,26 @@ public class RobotFlipper {
     void runScrew() {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
-        if (Robot.operatorController.getStartButton() && !disableScrew) {
+        if (Robot.operatorController.getStartButton()) {
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
-            timer.start();
+            // timer.start();
             // back button is to push screw out
         } else if (Robot.operatorController.getBackButton()) {
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
             // if its disabled, enable it
-            if (disableScrew)
-                disableScrew = false;
+            // if (disableScrew)
+            // disableScrew = false;
         } else {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
         // failsafe to not crush platform. (current coming soon after testing current
         // draw)
-        if (timer.get() > 5) {
-            timer.stop();
-            timer.reset();
-            disableScrew = true;
-        }
+        // if (timer.get() > 5) {
+        // timer.stop();
+        // timer.reset();
+        // disableScrew = true;
+        // }
     }
 
     /**
@@ -106,8 +106,11 @@ public class RobotFlipper {
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
         climbPower = SmartDashboard.getNumber("Climb Power", 0.7);
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
-        // set the motor (which sets the other automatically) to run based on joystick
-        climbSparkA.set(constant * climbPower * Math.pow(stickInput, climbExponent));
+
+        if (Math.abs(stickInput) > 0.3) {
+            // set the motor (which sets the other automatically) to run based on joystick
+            climbSparkA.set(constant * climbPower * Math.pow(stickInput, climbExponent));
+        }
     }
 
     /**
