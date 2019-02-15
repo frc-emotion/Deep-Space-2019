@@ -27,12 +27,15 @@ public class Robot extends TimedRobot {
   public static XboxController driveController;
   public static XboxController operatorController;
   public static Joystick climbController;
+  public static LemonTorch lemonTorch;
+
 
   // Mechs
   Arm armMech;
   Wrist wristMech;
   Intake intakeMech;
   DriveTrain driveTrain;
+  
   //RobotFlipper flipMech;
 
   // Nav-X Gyro
@@ -52,6 +55,7 @@ public class Robot extends TimedRobot {
     wristMech = new Wrist();
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
+    lemonTorch = new LemonTorch();
     //flipMech = new RobotFlipper();
 
     //gyro = new AHRS(Port.kUSB);
@@ -109,7 +113,9 @@ public class Robot extends TimedRobot {
     armMech.run();
     wristMech.run();
     intakeMech.run();
+    lemonTorch.update();
     driveTrain.run();
+    
     //flipMech.run():
     updateSmartDashboard();
   }

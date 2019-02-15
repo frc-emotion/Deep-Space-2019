@@ -55,6 +55,10 @@ public class Constants {
     public static final double WRIST_PWR_SCALE = 0.5;
     public static final double ARM_PWR_SCALE = 0.6;
 
+    public static final double TURBO_SPEED = 0.95;
+    public static final double REGULAR_SPEED = 0.7;
+    public static final double SLOW_SPEED = 0.5;
+
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
     /********************* PATHFINDER **********************/
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\

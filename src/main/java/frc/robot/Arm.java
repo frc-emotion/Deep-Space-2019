@@ -32,7 +32,7 @@ public class Arm extends Thread {
                                  // checks which macro is running
   double[] macroPosList = new double[4]; // store which positions arm needs to go to for macros.
   double startEncoderVal = 0; // stores initial encoder value if arm encoder doesnt reset.
-  
+
   public Arm() {
     mySparkMax = new CANSparkMax(Constants.ARM_SPARK_CID, MotorType.kBrushless);
     mySparkMax.setSmartCurrentLimit(Constants.MAX_CURRENT);

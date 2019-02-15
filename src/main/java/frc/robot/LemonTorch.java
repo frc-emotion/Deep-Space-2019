@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LemonTorch{
     private NetworkTable dataTable; // main table from limelight 
@@ -34,7 +35,7 @@ public class LemonTorch{
     }
 
     public void updateSmartDashboard(){
-
+        SmartDashboard.putNumber("TX", errorXBall);
     }
 
     /**
@@ -53,9 +54,16 @@ public class LemonTorch{
 	 * @return void
 	 */
     private void updateTableValues(){
-        errorXBall = tXBall.getDouble(0);
+        errorXBall = tXBall.getDouble(0.0);
         errorYBall = tYBall.getDouble(0);
         areaBall = tABall.getDouble(0);
         ballFound = tVBall.getDouble(0);
+    }
+
+    /**
+     * @return the errorXBall
+     */
+    public double getErrorXBall() {
+        return dataTable.getEntry("tx").getDouble(0.0);
     }
 }
