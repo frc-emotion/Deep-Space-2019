@@ -1,7 +1,6 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -77,11 +76,11 @@ public class RobotFlipper {
     void runScrew() {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
-        if (Robot.operatorController.getStartButton()) {
+        if (Robot.operatorController.getBackButton()) {
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
             // timer.start();
             // back button is to push screw out
-        } else if (Robot.operatorController.getBackButton()) {
+        } else if (Robot.operatorController.getStartButton()) {
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
             // if its disabled, enable it
             // if (disableScrew)
@@ -105,13 +104,8 @@ public class RobotFlipper {
     void runClimber() {
         int constant = 1; // for easy direction change
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = 1;
+        climbPower = 0.6;
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
-        // if (stickInput > 0.2) {
-        // constant = 1;
-        // } else if (stickInput < -0.2) {
-        // constant = -1;
-        // }
 
         if (Math.abs(stickInput) > 0.3) {
             // set the motor (which sets the other automatically) to run based on joystick
