@@ -33,7 +33,7 @@ public class Constants {
 
     // Screw Motor
     public static final int SCREW_TALON_CID = 15;// temporary
-    public static final double SCREW_SPEED = 0.5;
+    public static final double SCREW_SPEED = 0.4;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
     /********************* PORTS **********************/

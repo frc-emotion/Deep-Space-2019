@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -104,12 +105,19 @@ public class RobotFlipper {
     void runClimber() {
         int constant = 1; // for easy direction change
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = SmartDashboard.getNumber("Climb Power", 0.7);
+        climbPower = 1;
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
+        // if (stickInput > 0.2) {
+        // constant = 1;
+        // } else if (stickInput < -0.2) {
+        // constant = -1;
+        // }
 
         if (Math.abs(stickInput) > 0.3) {
             // set the motor (which sets the other automatically) to run based on joystick
-            climbSparkA.set(constant * climbPower * Math.pow(stickInput, climbExponent));
+            climbSparkA.set(constant * climbPower * stickInput);
+        } else {
+            climbSparkA.set(0);
         }
     }
 
