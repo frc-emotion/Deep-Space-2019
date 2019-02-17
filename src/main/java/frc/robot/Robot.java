@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
 
     //gyro = new AHRS(Port.kUSB);
 
-    updateSmartDashboard();
+    //updateSmartDashboard();
   }
 
   /**
@@ -116,8 +116,8 @@ public class Robot extends TimedRobot {
     lemonTorch.update();
     driveTrain.run();
     
-    // flipMech.run();
-    updateSmartDashboard();
+    //flipMech.run();
+    //updateSmartDashboard();
   }
 
    /**

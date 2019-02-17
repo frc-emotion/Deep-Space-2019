@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
@@ -20,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Thread{
 
     CANSparkMax intakeSparkR, intakeSparkL; // intake wheels
-    //DoubleSolenoid solR, solL; // hatch pushing solenoids
+    DoubleSolenoid hatchSolenoid; // hatch pushing solenoids
     double deadzone = 0.1; // joystick trigger threshold for when to activate intake. This is done so intake doesnt activate accidentally.
 
     /**
@@ -35,10 +36,10 @@ public class Intake extends Thread{
         intakeSparkR.setSmartCurrentLimit(Constants.MAX_CURRENT);
         intakeSparkR.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
         intakeSparkL.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
-        intakeSparkL.setIdleMode(IdleMode.kBrake);
-        intakeSparkR.setIdleMode(IdleMode.kBrake);
+        intakeSparkL.setIdleMode(IdleMode.kCoast);
+        intakeSparkR.setIdleMode(IdleMode.kCoast);
 
-        // solR = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BWD);
+        hatchSolenoid = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BKWD);
         // solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
         updateSmartDashboard();
     }
@@ -51,14 +52,22 @@ public class Intake extends Thread{
     @Override
     public void run() {
         updateSmartDashboard();
-        if(Robot.operatorController.getTriggerAxis(Hand.kRight) >= deadzone){ // check if trigger is pressed over deadzone
-            intakeOut(Robot.operatorController.getTriggerAxis(Hand.kRight));
+        if(Robot.operatorController.getTriggerAxis(Hand.kLeft) >= deadzone){ // check if trigger is pressed over deadzone
+           intakeIn(Robot.operatorController.getTriggerAxis(Hand.kLeft) * 0.5);
+        
         }
-        else if(Robot.operatorController.getTriggerAxis(Hand.kLeft) >= deadzone){
-            intakeIn(Robot.operatorController.getTriggerAxis(Hand.kLeft));
+        else if(Robot.operatorController.getTriggerAxis(Hand.kRight) >= deadzone){
+            intakeOut(Robot.operatorController.getTriggerAxis(Hand.kRight));    
         }
         else{
             stopIntake();
+        }
+
+        if(Robot.operatorController.getBumperPressed(Hand.kRight)){
+            releaseHatch();
+        }
+        else if(Robot.operatorController.getBumperReleased(Hand.kRight)){
+            resetSolenoid();
         }
 
     }
@@ -79,8 +88,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeIn(double speed){
-        intakeSparkR.set(-speed);
-        intakeSparkL.set(speed);
+        intakeSparkR.set(speed);
+        intakeSparkL.set(-speed);
 
     }
 
@@ -90,8 +99,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeOut(double speed){
-        intakeSparkR.set(speed);
-        intakeSparkL.set(-speed);
+        intakeSparkR.set(-speed);
+        intakeSparkL.set(speed);
 
     }
 
@@ -112,7 +121,18 @@ public class Intake extends Thread{
      * @return void
      */
     public void releaseHatch(){
-
+        hatchSolenoid.set(Value.kForward);
     }
+
+    /**
+     * Releases hatch mechanism by activating pnuematics.
+     *  
+     * @return void
+     */
+    public void resetSolenoid(){
+        hatchSolenoid.set(Value.kReverse);
+    }
+
+
 
 }

@@ -41,7 +41,7 @@ public class Wrist extends Thread{
 
         //load all the macro values
         macroPosList[0] = startEncoderVal; //hatch from ground pos
-        macroPosList[1] = startEncoderVal -  6.0; //bottom hatch placement
+        macroPosList[1] = startEncoderVal - 2.0; //bottom hatch placement
         macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
         macroPosList[3] = startEncoderVal + 30.0; // cargo into top rocket
 
@@ -90,9 +90,9 @@ public class Wrist extends Thread{
           else if(Robot.operatorController.getBumperPressed(Hand.kRight)){ // macro to release hatch.
 
           }
-          else if(Robot.operatorController.getStartButtonPressed()){
-            startEncoderVal = myEncoder.getPosition();
-          }
+          // else if(Robot.operatorController.getStartButtonPressed()){
+          //   startEncoderVal = myEncoder.getPosition();
+          // }
           else{ // if no input is being passed in 
             if(holdEnabled && !macroEnabled){ // if hold mode is activated use pid to go the the last recorded encoder position
               mySparkMax.set(pidControl.getValue(holdPos, myEncoder.getPosition())); 
