@@ -110,9 +110,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    intakeMech.run();
     armMech.run();
     wristMech.run();
-    intakeMech.run();
     lemonTorch.update();
     driveTrain.run();
     

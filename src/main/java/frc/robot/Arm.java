@@ -47,9 +47,9 @@ public class Arm extends Thread {
 
     // load all the macro values
     macroPosList[0] = startEncoderVal; // hatch from ground pos
-    macroPosList[1] = startEncoderVal + 51; // bottom hatch placement
-    macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
-    macroPosList[3] = startEncoderVal + 30.0; // cargo into top rocket
+    macroPosList[1] = startEncoderVal + 50; // bottom hatch placement
+    macroPosList[2] = startEncoderVal + 51; // cargo from the back;
+    macroPosList[3] = startEncoderVal + 48; // cargo into top rocket
 
     updateSmartDashboard();
 
@@ -84,17 +84,20 @@ public class Arm extends Thread {
       pidControl.cleanup();
 
       manualMove();
-    } else if (Robot.operatorController.getAButtonPressed()) { // macro pick up hatch from the ground
-      //toggleMacro(0);
-    } else if (Robot.operatorController.getBButtonPressed()) { // Bottom hatch placement
+    } 
+    else if (Robot.operatorController.getAButtonReleased()) { // macro pick up hatch from the ground
+      toggleMacro(0);
+    } 
+    else if (Robot.operatorController.getBButtonReleased()) { // Bottom hatch placement
       toggleMacro(1);
-    } else if (Robot.operatorController.getXButtonPressed()) { // macro for picking up cargo from loading zone
-      //toggleMacro(2);
-    } else if (Robot.operatorController.getYButtonPressed()) { // macro for shooting ball in top rocket
-      //toggleMacro(3);
-    } else if (Robot.operatorController.getBumperPressed(Hand.kRight)) { // macro to release hatch.
-
-    } else { // if no input is being passed in
+    } 
+    else if (Robot.operatorController.getXButtonReleased()) { // macro for picking up cargo from loading zone
+      toggleMacro(2);
+    } 
+    else if (Robot.operatorController.getYButtonReleased()) { // macro for shooting ball in top rocket
+      toggleMacro(3);
+    } 
+    else { // if no input is being passed in
       if (holdEnabled && !macroEnabled) { // if hold mode is activated use pid to go the the last recorded encoder
                                           // position
         mySparkMax.set(pidControl.getValue(holdPos, myEncoder.getPosition()));
@@ -115,7 +118,8 @@ public class Arm extends Thread {
    */
   public void manualMove() {
     double inputVal = Robot.operatorController.getY(Hand.kLeft);
-    mySparkMax.set(inputVal*Constants.ARM_PWR_SCALE); // scale arm speed down in both directions
+    int direction = inputVal > 0 ? 1 : -1;
+    mySparkMax.set(Math.pow(inputVal, 2)*Constants.ARM_PWR_SCALE*direction); // scale arm speed down in both directions
 
   }
 

@@ -41,9 +41,9 @@ public class Wrist extends Thread{
 
         //load all the macro values
         macroPosList[0] = startEncoderVal; //hatch from ground pos
-        macroPosList[1] = startEncoderVal - 2.0; //bottom hatch placement
-        macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
-        macroPosList[3] = startEncoderVal + 30.0; // cargo into top rocket
+        macroPosList[1] = startEncoderVal - 2.16; //bottom hatch placement
+        macroPosList[2] = startEncoderVal + 22; // cargo from the back;
+        macroPosList[3] = startEncoderVal + 22; // cargo into top rocket
 
 
 
@@ -76,19 +76,16 @@ public class Wrist extends Thread{
             manualMove();
           }
           else if(Robot.operatorController.getAButtonPressed()){ // macro pick up hatch from the ground
-            //toggleMacro(0); 
+            toggleMacro(0); 
           }
-          else if(Robot.operatorController.getBButtonReleased()){ // Bottom hatch placement
+          else if(Robot.operatorController.getBButtonPressed()){ // Bottom hatch placement
             toggleMacro(1);
           }
           else if(Robot.operatorController.getXButtonPressed()){ // macro for picking up cargo from loading zone
-            //toggleMacro(2);
+            toggleMacro(2);
           }
           else if(Robot.operatorController.getYButtonPressed()){ // macro for shooting ball in top rocket
-            //toggleMacro(3);
-          }
-          else if(Robot.operatorController.getBumperPressed(Hand.kRight)){ // macro to release hatch.
-
+            toggleMacro(3);
           }
           // else if(Robot.operatorController.getStartButtonPressed()){
           //   startEncoderVal = myEncoder.getPosition();
@@ -111,8 +108,9 @@ public class Wrist extends Thread{
      */
     public void manualMove(){
         double inputVal = Robot.operatorController.getY(Hand.kRight);
+        double direction = inputVal > 0 ? 1.0 : -1.0;
         //if(myEncoder.getPosition() >= -7) // softstop for the wrist.
-        mySparkMax.set(inputVal*Constants.WRIST_PWR_SCALE); // scale wrist speed down in both directions
+        mySparkMax.set(Math.pow(inputVal, 2.2)*Constants.WRIST_PWR_SCALE*direction); // scale wrist speed down in both directions
         //else{
         //  if(myEncoder.getPosition() < -7){
         //   mySparkMax.set(0.2);

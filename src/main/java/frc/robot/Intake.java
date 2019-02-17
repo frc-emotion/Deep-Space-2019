@@ -39,7 +39,7 @@ public class Intake extends Thread{
         intakeSparkL.setIdleMode(IdleMode.kCoast);
         intakeSparkR.setIdleMode(IdleMode.kCoast);
 
-        hatchSolenoid = new DoubleSolenoid(Constants.INTAKE_SOL_R_FWD, Constants.INTAKE_SOL_R_BKWD);
+        hatchSolenoid = new DoubleSolenoid(0, 1);
         // solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
         updateSmartDashboard();
     }
@@ -63,10 +63,10 @@ public class Intake extends Thread{
             stopIntake();
         }
 
-        if(Robot.operatorController.getBumperPressed(Hand.kRight)){
+        if(Robot.operatorController.getBumperPressed(Hand.kLeft)){
             releaseHatch();
         }
-        else if(Robot.operatorController.getBumperReleased(Hand.kRight)){
+        else if(Robot.operatorController.getBumperReleased(Hand.kLeft)){
             resetSolenoid();
         }
 
