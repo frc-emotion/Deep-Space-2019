@@ -57,7 +57,7 @@ public class Constants {
 
     public static final double TURBO_SPEED = 0.95;
     public static final double REGULAR_SPEED = 0.7;
-    public static final double SLOW_SPEED = 0.5;
+    public static final double SLOW_SPEED = 0.4;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\
     /********************* PATHFINDER **********************/

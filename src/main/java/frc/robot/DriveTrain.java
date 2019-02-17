@@ -45,14 +45,12 @@ public class DriveTrain {
     private double drivePower, driveExponent;
 
     // pathfinder helper object
-    //private PathConverter pathConverter;
+    // private PathConverter pathConverter;
     private boolean pathDone;
 
     // pid controls
     private PIDControl lemonPidControl;
     private PIDControl gyroPidControl;
-
-    
 
     public DriveTrain() {
         pathDone = false;
@@ -101,61 +99,45 @@ public class DriveTrain {
         lemonPidControl = new PIDControl(0.029f, 0.0002f, 0);
         lemonPidControl.setMaxSpeed(0.6);
 
-        //lemonPidControl.setScale(.01);
+        // lemonPidControl.setScale(.01);
 
-        //gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
+        // gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
 
-        //initShuffleBoard();
+        // initShuffleBoard();
     }
 
     /**
      * Method that will be called in teleop
      */
     public void run() {
-        //workShuffleBoard();
+        // workShuffleBoard();
 
-        //int driveChoice = driveChoices.getSelected();
+        // int driveChoice = driveChoices.getSelected();
         // switch (driveChoice) {
         // case 0:
-        //     // Lets worry about this after drive train works
-        //     // runPathFinderChoices();
-        //     break;
+        // // Lets worry about this after drive train works
+        // // runPathFinderChoices();
+        // break;
         // case 1:
-        //     runArcadeDrive();
+        // runArcadeDrive();
         // default:
-        //     runTankDrive();
-        //     break;
+        // runTankDrive();
+        // break;
         // }
 
-            //change speed modes;
-        if(Robot.driveController.getBumper(Hand.kLeft)){
-            drivePower = Constants.SLOW_SPEED;
-        }
-        else if (Robot.driveController.getBumper(Hand.kRight)){
-            drivePower = Constants.TURBO_SPEED;
-        }
-        else{
-            drivePower = Constants.REGULAR_SPEED;
-        }
-
-
-        //drive overrides
-        if(Robot.driveController.getAButton()){
-            //Robot.lemonTorch.update();
-            //System.out.println(Robot.lemonTorch.getErrorXBall());
+        // drive overrides
+        if (Robot.driveController.getAButton()) {
+            // Robot.lemonTorch.update();
+            // System.out.println(Robot.lemonTorch.getErrorXBall());
             drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorXBall()));
-        }
-        else{
+        } else {
             runTankDrive();
         }
 
-        if(Robot.driveController.getAButtonReleased()){
+        if (Robot.driveController.getAButtonReleased()) {
             lemonPidControl.cleanup();
         }
-        
 
-
-        
     }
 
     /**
@@ -168,7 +150,7 @@ public class DriveTrain {
             pathDone = true;
         }
         // if (pathConverter.isDriveAllowed())
-        //     runTankDrive();
+        // runTankDrive();
     }
 
     /**
@@ -199,10 +181,10 @@ public class DriveTrain {
 
             Trajectory traj = Pathfinder.readFromCSV(trajFile);
 
-            //pathConverter = new PathConverter(this, traj);
-            //pathConverter.setUpFollowers();
+            // pathConverter = new PathConverter(this, traj);
+            // pathConverter.setUpFollowers();
 
-            //pathConverter.followPath();
+            // pathConverter.followPath();
         }
     }
 
@@ -238,7 +220,13 @@ public class DriveTrain {
             constL *= -1;
         }
 
-        drivePower = SmartDashboard.getNumber("Drive Power", 0.7);
+        if (Robot.driveController.getBumper(Hand.kLeft))
+            drivePower = Constants.SLOW_SPEED;
+        else if (Robot.driveController.getBumper(Hand.kRight))
+            drivePower = Constants.TURBO_SPEED;
+        else
+            drivePower = Constants.REGULAR_SPEED;
+
         driveExponent = SmartDashboard.getNumber("Drive Exponent", 1.5);
 
         // curves
@@ -267,8 +255,8 @@ public class DriveTrain {
      * Initializes shuffleboard values and drop downs
      */
     private void initShuffleBoard() {
-        SmartDashboard.putNumber("Drive Power", drivePower);
-        SmartDashboard.putNumber("Drive Exponent", driveExponent);
+        SmartDashboard.putNumber("Drive Power", 0.7);
+        SmartDashboard.putNumber("Drive Exponent", 1.5);
 
         SmartDashboard.putString("Pathfinder Job", "NotFinished");
 
