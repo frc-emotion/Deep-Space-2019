@@ -34,7 +34,7 @@ public class RobotFlipper {
     Timer timer;
 
     // Boolean for disabling screw
-    boolean isNotClamped;
+    boolean disableScrew;
 
     // power and sensitivity for climber
     private double climbPower, climbExponent;
@@ -45,7 +45,7 @@ public class RobotFlipper {
         climbPower = 0.5;
         // deadzone exponent
         climbExponent = 1.1;
-        isNotClamped = true;
+        disableScrew = false;
         screwTalon = new WPI_TalonSRX(Constants.SCREW_TALON_CID);
 
         climbSparkA = new CANSparkMax(Constants.CLIMB_SPARK_CID_A, MotorType.kBrushless);
@@ -79,22 +79,21 @@ public class RobotFlipper {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
 
-        int povSelect = Robot.climbController.getPOV();
-
-        switch (povSelect) {
-        case 90:
+        if (Robot.climbController.getRawButton(6)) {
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
-            break;
-        case 270:
+            // timer.start();
+            // back button is to push screw out
+        } else if (Robot.climbController.getRawButton(5)) {
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
-            break;
-        default:
+            // if its disabled, enable it
+            // if (disableScrew)
+            // disableScrew = false;
+        } else {
             screwTalon.set(ControlMode.PercentOutput, 0);
-            break;
         }
 
         if (screwTalon.getOutputCurrent() >= 10000) {
-            isNotClamped = false;
+            disableScrew = true;
         }
     }
 
@@ -133,7 +132,7 @@ public class RobotFlipper {
      */
     void workShuffleBoard() {
         SmartDashboard.putNumber("Screw Current", screwTalon.getOutputCurrent());
+        SmartDashboard.putBoolean("Screw", !disableScrew);
         SmartDashboard.putNumber("Climber Encoder", climbEncoder.getPosition());
-        SmartDashboard.putBoolean("Screw", isNotClamped);
     }
 }
