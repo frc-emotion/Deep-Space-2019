@@ -111,7 +111,7 @@ public class RobotFlipper {
         // constant = -1;
         // }
 
-        if (Math.abs(stickInput) > 0.3) {
+        if (Math.abs(stickInput) > 0.1) {
             // set the motor (which sets the other automatically) to run based on joystick
             climbSparkA.set(constant * climbPower * stickInput);
         } else {
