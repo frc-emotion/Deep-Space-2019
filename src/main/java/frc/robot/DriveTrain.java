@@ -129,12 +129,21 @@ public class DriveTrain {
         if (Robot.driveController.getAButton()) {
             // Robot.lemonTorch.update();
             // System.out.println(Robot.lemonTorch.getErrorXBall());
-            drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorXBall()));
-        } else {
+            Robot.lemonTorch.switchPipelines(0);
+            drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
+        } 
+        else if(Robot.driveController.getBButton()){
+            Robot.lemonTorch.switchPipelines(1);
+            drive.arcadeDrive(lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorY()), lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
+        }
+        else {
             runTankDrive();
         }
 
         if (Robot.driveController.getAButtonReleased()) {
+            lemonPidControl.cleanup();
+        }
+        if(Robot.driveController.getBButtonReleased()){
             lemonPidControl.cleanup();
         }
 

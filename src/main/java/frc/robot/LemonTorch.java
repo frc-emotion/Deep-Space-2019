@@ -7,19 +7,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class LemonTorch{
     private NetworkTable dataTable; // main table from limelight 
-    private NetworkTableEntry tXBall, tYBall, tABall, tVBall; // network table entries from the main network table
-    private double errorXBall = 0, errorYBall = 0 , areaBall = 0, ballFound = 0;
+    private NetworkTableEntry tX, tY, tA, tV; // network table entries from the main network table
+    private double errorX = 0, errorY = 0 , area = 0, targetFound = 0;
 
     private boolean gatsby; //green light 
 
     public LemonTorch(){
 
         dataTable = NetworkTableInstance.getDefault().getTable("limelight");
-		tXBall = dataTable.getEntry("tx"); // get all the vals
-		tYBall = dataTable.getEntry("ty");
-		tABall = dataTable.getEntry("ta");
-        tVBall = dataTable.getEntry("tv");
+        dataTable.getEntry("pipeline").setNumber(0); // set to ball pipeline
+		tX = dataTable.getEntry("tx"); // get all the vals
+		tY = dataTable.getEntry("ty");
+		tA = dataTable.getEntry("ta");
+        tV = dataTable.getEntry("tv");
         dataTable.getEntry("ledMode").setNumber(3); // set green light to be off
+        
         
     }
 
@@ -35,7 +37,7 @@ public class LemonTorch{
     }
 
     public void updateSmartDashboard(){
-        SmartDashboard.putNumber("TX", errorXBall);
+        SmartDashboard.putNumber("TX", errorX);
     }
 
     /**
@@ -54,16 +56,30 @@ public class LemonTorch{
 	 * @return void
 	 */
     private void updateTableValues(){
-        errorXBall = tXBall.getDouble(0.0);
-        errorYBall = tYBall.getDouble(0);
-        areaBall = tABall.getDouble(0);
-        ballFound = tVBall.getDouble(0);
+        errorX = tX.getDouble(0.0);
+        errorY = tY.getDouble(0);
+        area = tA.getDouble(0);
+        targetFound = tV.getDouble(0);
     }
 
     /**
-     * @return the errorXBall
+     * @return the errorX
      */
-    public double getErrorXBall() {
+    public double getErrorX() {
         return dataTable.getEntry("tx").getDouble(0.0);
+    }
+
+    /**
+     * @return the errorY
+     */
+    public double getErrorY() {
+        return errorY;
+    }
+
+    /**
+     * switch pipelines 
+     */
+    public void switchPipelines(int pipe){
+        dataTable.getEntry("pipeline").setNumber(pipe); 
     }
 }
