@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
     lemonTorch.update();
     driveTrain.run();
     
-    flipMech.run();
+    //flipMech.run();
     updateSmartDashboard();
   }
 

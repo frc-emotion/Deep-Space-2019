@@ -47,7 +47,7 @@ public class Arm extends Thread {
 
     // load all the macro values
     macroPosList[0] = startEncoderVal; // hatch from ground pos
-    macroPosList[1] = startEncoderVal + 48; // bottom hatch placement
+    macroPosList[1] = startEncoderVal + 51; // bottom hatch placement
     macroPosList[2] = startEncoderVal + 20.0; // cargo from the back;
     macroPosList[3] = startEncoderVal + 30.0; // cargo into top rocket
 

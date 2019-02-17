@@ -98,23 +98,23 @@ public class DriveTrain {
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
 
         // add pid controllers from sensors
-        lemonPidControl = new PIDControl(0.02f, 0.002f, 0);
+        lemonPidControl = new PIDControl(0.029f, 0.0002f, 0);
         lemonPidControl.setMaxSpeed(0.6);
 
         //lemonPidControl.setScale(.01);
 
         //gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
 
-        initShuffleBoard();
+        //initShuffleBoard();
     }
 
     /**
      * Method that will be called in teleop
      */
     public void run() {
-        workShuffleBoard();
+        //workShuffleBoard();
 
-        int driveChoice = driveChoices.getSelected();
+        //int driveChoice = driveChoices.getSelected();
         // switch (driveChoice) {
         // case 0:
         //     // Lets worry about this after drive train works
@@ -143,7 +143,7 @@ public class DriveTrain {
         if(Robot.driveController.getAButton()){
             //Robot.lemonTorch.update();
             //System.out.println(Robot.lemonTorch.getErrorXBall());
-            drive.arcadeDrive(0.4, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorXBall()));
+            drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorXBall()));
         }
         else{
             runTankDrive();
