@@ -119,7 +119,7 @@ public class Arm extends Thread {
   public void manualMove() {
     double inputVal = Robot.operatorController.getY(Hand.kLeft);
     int direction = inputVal > 0 ? 1 : -1;
-    mySparkMax.set(Math.pow(inputVal, 2)*Constants.ARM_PWR_SCALE*direction); // scale arm speed down in both directions
+    mySparkMax.set(Math.pow(Math.abs(inputVal), 2)*Constants.ARM_PWR_SCALE*direction); // scale arm speed down in both directions
 
   }
 

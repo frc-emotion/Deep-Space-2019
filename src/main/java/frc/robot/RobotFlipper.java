@@ -78,11 +78,12 @@ public class RobotFlipper {
     void runScrew() {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
-        if (Robot.operatorController.getStartButton()) {
+
+        if (Robot.climbController.getRawButton(6)) {
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
             // timer.start();
             // back button is to push screw out
-        } else if (Robot.operatorController.getBackButton()) {
+        } else if (Robot.climbController.getRawButton(5)) {
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
             // if its disabled, enable it
             // if (disableScrew)
@@ -91,9 +92,8 @@ public class RobotFlipper {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
-        if(screwTalon.getOutputCurrent() >= 10000){
-            Robot.operatorController.setRumble(RumbleType.kRightRumble, 1);
-            Robot.operatorController.setRumble(RumbleType.kLeftRumble, 1);
+        if (screwTalon.getOutputCurrent() >= 10000) {
+            disableScrew = true;
         }
     }
 
@@ -103,7 +103,7 @@ public class RobotFlipper {
     void runClimber() {
         int constant = 1; // for easy direction change
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = 1;
+        climbPower = 0.7;
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
         // if (stickInput > 0.2) {
         // constant = 1;
@@ -111,7 +111,7 @@ public class RobotFlipper {
         // constant = -1;
         // }
 
-        if (Math.abs(stickInput) > 0.3) {
+        if (Math.abs(stickInput) > 0.1) {
             // set the motor (which sets the other automatically) to run based on joystick
             climbSparkA.set(constant * climbPower * stickInput);
         } else {

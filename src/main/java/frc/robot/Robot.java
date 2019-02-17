@@ -29,17 +29,16 @@ public class Robot extends TimedRobot {
   public static Joystick climbController;
   public static LemonTorch lemonTorch;
 
-
   // Mechs
   Arm armMech;
   Wrist wristMech;
   Intake intakeMech;
   DriveTrain driveTrain;
 
-  // RobotFlipper flipMech;
+  RobotFlipper flipMech;
 
   // Nav-X Gyro
-  //public static AHRS gyro;
+  // public static AHRS gyro;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -56,11 +55,11 @@ public class Robot extends TimedRobot {
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
     lemonTorch = new LemonTorch();
-    // flipMech = new RobotFlipper();
+    flipMech = new RobotFlipper();
 
-    //gyro = new AHRS(Port.kUSB);
+    // gyro = new AHRS(Port.kUSB);
 
-    //updateSmartDashboard();
+    // updateSmartDashboard();
   }
 
   /**
@@ -74,7 +73,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+
   }
 
   /**
@@ -115,17 +114,18 @@ public class Robot extends TimedRobot {
     wristMech.run();
     lemonTorch.update();
     driveTrain.run();
-    
-    //flipMech.run();
-    //updateSmartDashboard();
+
+    flipMech.run();
+    // updateSmartDashboard();
   }
 
-   /**
+  /**
    * Update smartdashboard values of static robot objs
+   * 
    * @return void
    */
-  public void updateSmartDashboard(){
-    //SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
+  public void updateSmartDashboard() {
+    // SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
   }
 
   /**
