@@ -103,7 +103,7 @@ public class RobotFlipper {
     void runClimber() {
         int constant = 1; // for easy direction change
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = 1;
+        climbPower = 0.7;
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
         // if (stickInput > 0.2) {
         // constant = 1;
