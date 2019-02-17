@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -36,6 +37,8 @@ public class RobotFlipper {
     // Boolean for disabling screw
     boolean disableScrew;
 
+    DifferentialDrive climbDrive;
+
     // power and sensitivity for climber
     private double climbPower, climbExponent;
 
@@ -49,16 +52,18 @@ public class RobotFlipper {
         screwTalon = new WPI_TalonSRX(Constants.SCREW_TALON_CID);
 
         climbSparkA = new CANSparkMax(Constants.CLIMB_SPARK_CID_A, MotorType.kBrushless);
-        climbSparkA.setSmartCurrentLimit(Constants.MAX_CURRENT);
-        climbSparkA.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
+        climbSparkA.setSmartCurrentLimit(70);
+        climbSparkA.setSecondaryCurrentLimit(70);
         climbSparkA.setIdleMode(IdleMode.kBrake);
 
         climbSparkB = new CANSparkMax(Constants.CLIMB_SPARK_CID_B, MotorType.kBrushless);
-        climbSparkB.setSmartCurrentLimit(Constants.MAX_CURRENT);
-        climbSparkB.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
+        climbSparkB.setSmartCurrentLimit(70);
+        climbSparkB.setSecondaryCurrentLimit(70);
         climbSparkB.setIdleMode(IdleMode.kBrake);
         // follow the other spark, second parameter is to invert
-        climbSparkB.follow(climbSparkA, true);
+
+        climbDrive = new DifferentialDrive(climbSparkB, climbSparkA);
+
         climbEncoder = climbSparkA.getEncoder();
         initShuffleBoard();
     }
@@ -79,11 +84,11 @@ public class RobotFlipper {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
 
-        if (Robot.climbController.getRawButton(6)) {
+        if (Robot.operatorController.getStartButton()) {
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
             // timer.start();
             // back button is to push screw out
-        } else if (Robot.climbController.getRawButton(5)) {
+        } else if (Robot.operatorController.getBackButton()) {
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
             // if its disabled, enable it
             // if (disableScrew)
@@ -92,7 +97,7 @@ public class RobotFlipper {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
-        if (screwTalon.getOutputCurrent() >= 10000) {
+        if (screwTalon.getOutputCurrent() >= 17) {
             disableScrew = true;
         }
     }
@@ -101,9 +106,9 @@ public class RobotFlipper {
      * Runs the climber mechanism
      */
     void runClimber() {
-        int constant = 1; // for easy direction change
+        int constantA = 1, constantB = -1; // for easy direction change
         double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = 0.7;
+        climbPower = 0.95;
         climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
         // if (stickInput > 0.2) {
         // constant = 1;
@@ -111,11 +116,16 @@ public class RobotFlipper {
         // constant = -1;
         // }
 
-        if (Math.abs(stickInput) > 0.1) {
+        if (Math.abs(stickInput) > 0.2) {
             // set the motor (which sets the other automatically) to run based on joystick
-            climbSparkA.set(constant * climbPower * stickInput);
+            // climbSparkA.set(constantA * climbPower * stickInput);
+            // climbSparkB.set(constantB * climbPower * stickInput);
+
+            double speed = constantB * climbPower * stickInput;
+
+            climbDrive.tankDrive(speed, speed, true);
         } else {
-            climbSparkA.set(0);
+            climbDrive.tankDrive(0, 0);
         }
     }
 
@@ -134,5 +144,7 @@ public class RobotFlipper {
         SmartDashboard.putNumber("Screw Current", screwTalon.getOutputCurrent());
         SmartDashboard.putBoolean("Screw", !disableScrew);
         SmartDashboard.putNumber("Climber Encoder", climbEncoder.getPosition());
+        SmartDashboard.putNumber("Climb A Current", climbSparkA.getOutputCurrent());
+        SmartDashboard.putNumber("Climb B Current", climbSparkB.getOutputCurrent());
     }
 }
