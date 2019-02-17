@@ -34,7 +34,7 @@ public class RobotFlipper {
     Timer timer;
 
     // Boolean for disabling screw
-    boolean disableScrew;
+    boolean isNotClamped;
 
     // power and sensitivity for climber
     private double climbPower, climbExponent;
@@ -45,7 +45,7 @@ public class RobotFlipper {
         climbPower = 0.5;
         // deadzone exponent
         climbExponent = 1.1;
-        disableScrew = false;
+        isNotClamped = true;
         screwTalon = new WPI_TalonSRX(Constants.SCREW_TALON_CID);
 
         climbSparkA = new CANSparkMax(Constants.CLIMB_SPARK_CID_A, MotorType.kBrushless);
@@ -78,22 +78,23 @@ public class RobotFlipper {
     void runScrew() {
         int constant = 1; // for easy direction change
         // start button is to bring screw in
-        if (Robot.operatorController.getStartButton()) {
+
+        int povSelect = Robot.climbController.getPOV();
+
+        switch (povSelect) {
+        case 90:
             screwTalon.set(ControlMode.PercentOutput, constant * Constants.SCREW_SPEED);
-            // timer.start();
-            // back button is to push screw out
-        } else if (Robot.operatorController.getBackButton()) {
+            break;
+        case 270:
             screwTalon.set(ControlMode.PercentOutput, -constant * Constants.SCREW_SPEED);
-            // if its disabled, enable it
-            // if (disableScrew)
-            // disableScrew = false;
-        } else {
+            break;
+        default:
             screwTalon.set(ControlMode.PercentOutput, 0);
+            break;
         }
 
-        if(screwTalon.getOutputCurrent() >= 10000){
-            Robot.operatorController.setRumble(RumbleType.kRightRumble, 1);
-            Robot.operatorController.setRumble(RumbleType.kLeftRumble, 1);
+        if (screwTalon.getOutputCurrent() >= 10000) {
+            isNotClamped = false;
         }
     }
 
@@ -132,7 +133,7 @@ public class RobotFlipper {
      */
     void workShuffleBoard() {
         SmartDashboard.putNumber("Screw Current", screwTalon.getOutputCurrent());
-        SmartDashboard.putBoolean("Screw", !disableScrew);
         SmartDashboard.putNumber("Climber Encoder", climbEncoder.getPosition());
+        SmartDashboard.putBoolean("Screw", isNotClamped);
     }
 }
