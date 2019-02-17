@@ -35,10 +35,10 @@ public class Robot extends TimedRobot {
   Intake intakeMech;
   DriveTrain driveTrain;
 
-  RobotFlipper flipMech;
+  // RobotFlipper flipMech;
 
   // Nav-X Gyro
-  // public static AHRS gyro;
+  public static AHRS gyro;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -55,11 +55,11 @@ public class Robot extends TimedRobot {
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
     lemonTorch = new LemonTorch();
-    flipMech = new RobotFlipper();
+    // flipMech = new RobotFlipper();
 
-    // gyro = new AHRS(Port.kUSB);
+    gyro = new AHRS(Port.kUSB);
 
-    // updateSmartDashboard();
+    updateSmartDashboard();
   }
 
   /**
@@ -115,8 +115,8 @@ public class Robot extends TimedRobot {
     lemonTorch.update();
     driveTrain.run();
 
-    flipMech.run();
-    // updateSmartDashboard();
+    // flipMech.run();
+    updateSmartDashboard();
   }
 
   /**
@@ -125,7 +125,7 @@ public class Robot extends TimedRobot {
    * @return void
    */
   public void updateSmartDashboard() {
-    // SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
+    SmartDashboard.putNumber("Nav-X Angle", gyro.getAngle());
   }
 
   /**
