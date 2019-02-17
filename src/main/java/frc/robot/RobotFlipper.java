@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -90,13 +91,10 @@ public class RobotFlipper {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
-        // failsafe to not crush platform. (current coming soon after testing current
-        // draw)
-        // if (timer.get() > 5) {
-        // timer.stop();
-        // timer.reset();
-        // disableScrew = true;
-        // }
+        if(screwTalon.getOutputCurrent() >= 10000){
+            Robot.operatorController.setRumble(RumbleType.kRightRumble, 1);
+            Robot.operatorController.setRumble(RumbleType.kLeftRumble, 1);
+        }
     }
 
     /**
