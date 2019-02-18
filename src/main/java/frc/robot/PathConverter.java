@@ -75,8 +75,8 @@ public class PathConverter {
         double p = 1, i = 0, d = 0;
 
         Robot.gyro.reset();
-        lEnc.setPosition(0);
-        rEnc.setPosition(0);
+        // lEnc.setPosition(0);
+        // rEnc.setPosition(0);
 
         // give the followers the trajectories (switch bexause it is buggy)
         lFollower.setTrajectory(modifier.getRightTrajectory());
