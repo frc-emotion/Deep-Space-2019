@@ -50,12 +50,10 @@ public class DriveTrain {
     private boolean pathDone;
 
     // pid controls
-    private PIDControl lemonPidControl;
+    // private PIDControl lemonPidControl;
     private PIDControl gyroPidControl;
 
     private double holdHeading = 0.0;
-
-    private Timer timer;
 
     public DriveTrain() {
         pathDone = false;
@@ -101,7 +99,7 @@ public class DriveTrain {
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
 
         // add pid controllers from sensors
-        lemonPidControl = new PIDControl(0.029f, 0.0004f, 0);
+        // lemonPidControl = new PIDControl(0.029f, 0.0004f, 0);
         // lemonPidControl.setMaxSpeed(0.6);
 
         // lemonPidControl.setScale(.01);
@@ -256,34 +254,7 @@ public class DriveTrain {
         double driveL = constL * drivePower * Math.pow(Math.abs(lAxis), driveExponent);
         double driveR = constR * drivePower * Math.pow(Math.abs(rAxis), driveExponent);
 
-        velocity = Math.abs(Robot.gyro.getVelocityZ());
-        if (tempV < velocity)
-            tempV = velocity;
-
-        accel = Math.abs(Robot.gyro.getWorldLinearAccelZ());
-        if (tempA < accel)
-            tempA = accel;
-
-        SmartDashboard.putNumber("Velocity", tempV);
-        SmartDashboard.putNumber("Acceleration", tempA);
-
         drive.tankDrive(driveL, driveR);
-    }
-
-    double tempV = 0;
-    double tempA = 0;
-    double velocity = 0;
-    double accel = 0;
-
-    void recordStuff() {
-        timer.start();
-        if (timer.get() >= 1) {
-            drive.tankDrive(0, 0);
-            timer.stop();
-        } else {
-            drive.tankDrive(1, 1);
-        }
-
     }
 
     /**
