@@ -27,8 +27,8 @@ public class Constants {
     public static final int DT_CAN_LC_PORT = 3;
 
     // Climb Motors
-    public static final int CLIMB_SPARK_CID_A = 14; 
-    public static final int CLIMB_SPARK_CID_B = 6; 
+    public static final int CLIMB_SPARK_CID_A = 14;
+    public static final int CLIMB_SPARK_CID_B = 6;
     public static final int CLIMBER_CONTROLLER_AXIS = 1;// temporary
 
     // Screw Motor
@@ -67,9 +67,11 @@ public class Constants {
     // NEED TO CHANGE THIS
     public static final int ENCODER_REV = 42;// temporary
 
+    public static final int WHEEL_REV = 7;
+
     /* Constants for PathFinder in metric units */
     public static double WHEELBASE_WIDTH = 0.6898513;
     public static double WHEEL_DIAMETER = 0.1524;
-    public static double MAX_VELOCITY = 2;
+    public static double MAX_VELOCITY = 0.4;
 
 }

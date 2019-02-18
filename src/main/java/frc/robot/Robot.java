@@ -27,12 +27,12 @@ public class Robot extends TimedRobot {
   public static XboxController driveController;
   public static XboxController operatorController;
   public static Joystick climbController;
-  public static LemonTorch lemonTorch;
+  // public static LemonTorch lemonTorch;
 
   // Mechs
-  Arm armMech;
-  Wrist wristMech;
-  Intake intakeMech;
+  // Arm armMech;
+  // Wrist wristMech;
+  // Intake intakeMech;
   DriveTrain driveTrain;
 
   // RobotFlipper flipMech;
@@ -50,11 +50,11 @@ public class Robot extends TimedRobot {
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
     climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
 
-    armMech = new Arm();
-    wristMech = new Wrist();
-    intakeMech = new Intake();
+    // armMech = new Arm();
+    // wristMech = new Wrist();
+    // intakeMech = new Intake();
     driveTrain = new DriveTrain();
-    lemonTorch = new LemonTorch();
+    // lemonTorch = new LemonTorch();
     // flipMech = new RobotFlipper();
 
     gyro = new AHRS(Port.kUSB);
@@ -109,10 +109,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    intakeMech.run();
-    armMech.run();
-    wristMech.run();
-    lemonTorch.update();
+    // intakeMech.run();
+    // armMech.run();
+    // wristMech.run();
+    // lemonTorch.update();
     driveTrain.run();
 
     // flipMech.run();

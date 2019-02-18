@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -45,7 +46,7 @@ public class DriveTrain {
     private double drivePower, driveExponent;
 
     // pathfinder helper object
-    // private PathConverter pathConverter;
+    private PathConverter pathConverter;
     private boolean pathDone;
 
     // pid controls
@@ -53,6 +54,8 @@ public class DriveTrain {
     private PIDControl gyroPidControl;
 
     private double holdHeading = 0.0;
+
+    private Timer timer;
 
     public DriveTrain() {
         pathDone = false;
@@ -99,57 +102,57 @@ public class DriveTrain {
 
         // add pid controllers from sensors
         lemonPidControl = new PIDControl(0.029f, 0.0004f, 0);
-        //lemonPidControl.setMaxSpeed(0.6);
+        // lemonPidControl.setMaxSpeed(0.6);
 
         // lemonPidControl.setScale(.01);
 
         gyroPidControl = new PIDControl(0.4f, 0f, 0f);
         gyroPidControl.setMaxSpeed(0.5);
-        // initShuffleBoard();
+        initShuffleBoard();
     }
 
     /**
      * Method that will be called in teleop
      */
     public void run() {
-        // workShuffleBoard();
+        workShuffleBoard();
 
-        // int driveChoice = driveChoices.getSelected();
-        // switch (driveChoice) {
-        // case 0:
-        // // Lets worry about this after drive train works
-        // // runPathFinderChoices();
-        // break;
-        // case 1:
-        // runArcadeDrive();
-        // default:
+        int driveChoice = driveChoices.getSelected();
+        switch (driveChoice) {
+        case 0:
+            // Lets worry about this after drive train works
+            runPathFinderChoices();
+            break;
+        case 1:
+            runArcadeDrive();
+        default:
+            runTankDrive();
+            break;
+        }
+
+        // // drive overrides
+        // if (Robot.driveController.getAButton()) {
+        // // Robot.lemonTorch.update();
+        // // System.out.println(Robot.lemonTorch.getErrorXBall());
+        // Robot.lemonTorch.switchPipelines(0);
+        // drive.arcadeDrive(0.55, lemonPidControl.getValue(0,
+        // -Robot.lemonTorch.getErrorX()));
+        // } else if (Robot.driveController.getYButton()) {
+        // drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft),
+        // gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
+        // } else {
         // runTankDrive();
-        // break;
         // }
 
-        // drive overrides
-        if (Robot.driveController.getAButton()) {
-            // Robot.lemonTorch.update();
-            // System.out.println(Robot.lemonTorch.getErrorXBall());
-            Robot.lemonTorch.switchPipelines(0);
-            drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
-        } 
-        else if(Robot.driveController.getYButton()){
-            drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft), gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
-        }
-        else {
-            runTankDrive();
-        }
-
-        if(Robot.driveController.getYButtonPressed()){
-            holdHeading = Robot.gyro.getAngle();
-        }
-        if (Robot.driveController.getAButtonReleased()) {
-            lemonPidControl.cleanup();
-        }
-        if(Robot.driveController.getBButtonReleased()){
-            lemonPidControl.cleanup();
-        }
+        // if (Robot.driveController.getYButtonPressed()) {
+        // holdHeading = Robot.gyro.getAngle();
+        // }
+        // if (Robot.driveController.getAButtonReleased()) {
+        // lemonPidControl.cleanup();
+        // }
+        // if (Robot.driveController.getBButtonReleased()) {
+        // lemonPidControl.cleanup();
+        // }
 
     }
 
@@ -162,8 +165,8 @@ public class DriveTrain {
             runPathFinder();
             pathDone = true;
         }
-        // if (pathConverter.isDriveAllowed())
-        // runTankDrive();
+        if (pathConverter.isDriveAllowed())
+            runTankDrive();
     }
 
     /**
@@ -186,7 +189,15 @@ public class DriveTrain {
             break;
         }
 
-        if (!pathName.equals("")) {
+        if (pathChoice == 2) {
+            Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
+                    Trajectory.Config.SAMPLES_HIGH, 0.02, 0.4, 0.8, 5.0);
+            Trajectory trajectory = Pathfinder.generate(PathTrajectories.rightHab, config);
+
+            pathConverter = new PathConverter(this, trajectory);
+            pathConverter.setUpFollowers();
+            pathConverter.followPath();
+        } else if (!pathName.equals("")) {
             String dir = Filesystem.getDeployDirectory().toString();
             String fileName = pathName + ".pf1.csv";
 
@@ -194,10 +205,9 @@ public class DriveTrain {
 
             Trajectory traj = Pathfinder.readFromCSV(trajFile);
 
-            // pathConverter = new PathConverter(this, traj);
-            // pathConverter.setUpFollowers();
-
-            // pathConverter.followPath();
+            pathConverter = new PathConverter(this, traj);
+            pathConverter.setUpFollowers();
+            pathConverter.followPath();
         }
     }
 
@@ -246,7 +256,34 @@ public class DriveTrain {
         double driveL = constL * drivePower * Math.pow(Math.abs(lAxis), driveExponent);
         double driveR = constR * drivePower * Math.pow(Math.abs(rAxis), driveExponent);
 
+        velocity = Math.abs(Robot.gyro.getVelocityZ());
+        if (tempV < velocity)
+            tempV = velocity;
+
+        accel = Math.abs(Robot.gyro.getWorldLinearAccelZ());
+        if (tempA < accel)
+            tempA = accel;
+
+        SmartDashboard.putNumber("Velocity", tempV);
+        SmartDashboard.putNumber("Acceleration", tempA);
+
         drive.tankDrive(driveL, driveR);
+    }
+
+    double tempV = 0;
+    double tempA = 0;
+    double velocity = 0;
+    double accel = 0;
+
+    void recordStuff() {
+        timer.start();
+        if (timer.get() >= 1) {
+            drive.tankDrive(0, 0);
+            timer.stop();
+        } else {
+            drive.tankDrive(1, 1);
+        }
+
     }
 
     /**
@@ -271,7 +308,7 @@ public class DriveTrain {
         SmartDashboard.putNumber("Drive Power", 0.7);
         SmartDashboard.putNumber("Drive Exponent", 1.5);
 
-        SmartDashboard.putString("Pathfinder Job", "NotFinished");
+        SmartDashboard.putBoolean("Pathfinder Job", false);
 
         driveChoices = new SendableChooser<Integer>();
         driveChoices.setDefaultOption("Tank Drive", -1);
@@ -292,16 +329,13 @@ public class DriveTrain {
      */
     private void workShuffleBoard() {
         SmartDashboard.putNumber("Right Drive Encoder Position", rEncoder.getPosition());
-        SmartDashboard.putNumber("Right Drive Encoder Velocity (rpm)", rEncoder.getVelocity());
-
         SmartDashboard.putNumber("Left Drive Encoder Position", lEncoder.getPosition());
-        SmartDashboard.putNumber("Left Drive Encoder Velocity (rpm)", lEncoder.getVelocity());
 
-        // list motor temperatures and update them
-        for (CANSparkMax spark : driveSparkMaxes) {
-            String label = "Spark Max" + spark.getDeviceId() + "Temp. (C)";
-            SmartDashboard.putNumber(label, spark.getMotorTemperature());
-        }
+        // // list motor temperatures and update them
+        // for (CANSparkMax spark : driveSparkMaxes) {
+        // String label = "Spark Max" + spark.getDeviceId() + "Temp. (C)";
+        // SmartDashboard.putNumber(label, spark.getMotorTemperature());
+        // }
     }
 
     /**
