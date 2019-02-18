@@ -35,15 +35,15 @@ public class Wrist extends Thread{
 
         myEncoder = mySparkMax.getEncoder();
         
-        pidControl = new PIDControl(.012f, 0.001f, 0f); // configure wrist pid tuning values
+        pidControl = new PIDControl(.012f, 0.0f, 0f); // configure wrist pid tuning values
         //pidControl.setScale(1.0/10.0); // scale down values 
         pidControl.setMaxSpeed(0.6); // set max speed while performing pid
 
         //load all the macro values
         macroPosList[0] = startEncoderVal; //hatch from ground pos
-        macroPosList[1] = startEncoderVal - 2.16; //bottom hatch placement
-        macroPosList[2] = startEncoderVal + 22; // cargo from the back;
-        macroPosList[3] = startEncoderVal + 22; // cargo into top rocket
+        macroPosList[1] = startEncoderVal - 4.5; //bottom hatch placement
+        macroPosList[2] = startEncoderVal + 19.55; // cargo bottom
+        macroPosList[3] = startEncoderVal + 19.55; // hatch bottom
 
 
 

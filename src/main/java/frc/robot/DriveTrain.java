@@ -52,6 +52,8 @@ public class DriveTrain {
     private PIDControl lemonPidControl;
     private PIDControl gyroPidControl;
 
+    private double holdHeading = 0.0;
+
     public DriveTrain() {
         pathDone = false;
         // drive power (max 1)
@@ -96,13 +98,13 @@ public class DriveTrain {
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
 
         // add pid controllers from sensors
-        lemonPidControl = new PIDControl(0.029f, 0.0002f, 0);
-        lemonPidControl.setMaxSpeed(0.6);
+        lemonPidControl = new PIDControl(0.029f, 0.0004f, 0);
+        //lemonPidControl.setMaxSpeed(0.6);
 
         // lemonPidControl.setScale(.01);
 
-        // gyroPidControl = new PIDControl(Robot.gyro, 0f, 0f, 0f);
-
+        gyroPidControl = new PIDControl(0.4f, 0f, 0f);
+        gyroPidControl.setMaxSpeed(0.5);
         // initShuffleBoard();
     }
 
@@ -132,14 +134,16 @@ public class DriveTrain {
             Robot.lemonTorch.switchPipelines(0);
             drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
         } 
-        else if(Robot.driveController.getBButton()){
-            Robot.lemonTorch.switchPipelines(1);
-            drive.arcadeDrive(lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorY()), lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
+        else if(Robot.driveController.getYButton()){
+            drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft), gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
         }
         else {
             runTankDrive();
         }
 
+        if(Robot.driveController.getYButtonPressed()){
+            holdHeading = Robot.gyro.getAngle();
+        }
         if (Robot.driveController.getAButtonReleased()) {
             lemonPidControl.cleanup();
         }

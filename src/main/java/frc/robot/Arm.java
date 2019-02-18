@@ -43,13 +43,13 @@ public class Arm extends Thread {
 
     pidControl = new PIDControl(.014f, 0f, 0f); // configure arm pid tuning values
     //pidControl.setScale(1.0 / 200.0); // scale down values
-    pidControl.setMaxSpeed(0.5); // set max speed while performing pid
+    pidControl.setMaxSpeed(0.3); // set max speed while performing pid
 
     // load all the macro values
     macroPosList[0] = startEncoderVal; // hatch from ground pos
     macroPosList[1] = startEncoderVal + 50; // bottom hatch placement
-    macroPosList[2] = startEncoderVal + 51; // cargo from the back;
-    macroPosList[3] = startEncoderVal + 48; // cargo into top rocket
+    macroPosList[2] = startEncoderVal + 48.5; // cargo bottom;
+    macroPosList[3] = startEncoderVal + 51; // hatch bottom
 
     updateSmartDashboard();
 
@@ -97,6 +97,9 @@ public class Arm extends Thread {
     else if (Robot.operatorController.getYButtonReleased()) { // macro for shooting ball in top rocket
       toggleMacro(3);
     } 
+    // else if(Robot.operatorController.getStartButtonReleased()){
+    //   startEncoderVal = myEncoder.getPosition();
+    // }
     else { // if no input is being passed in
       if (holdEnabled && !macroEnabled) { // if hold mode is activated use pid to go the the last recorded encoder
                                           // position
