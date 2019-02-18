@@ -32,10 +32,10 @@ public class Intake extends Thread{
         intakeSparkR = new CANSparkMax(Constants.INTAKE_SPARK_CID_R, MotorType.kBrushless);
         intakeSparkL = new CANSparkMax(Constants.INTAKE_SPARK_CID_L, MotorType.kBrushless);
 
-        intakeSparkL.setSmartCurrentLimit(Constants.MAX_CURRENT);
-        intakeSparkR.setSmartCurrentLimit(Constants.MAX_CURRENT);
-        intakeSparkR.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
-        intakeSparkL.setSecondaryCurrentLimit(Constants.MAX_CURRENT);
+        intakeSparkL.setSmartCurrentLimit(50);
+        intakeSparkR.setSmartCurrentLimit(50);
+        intakeSparkR.setSecondaryCurrentLimit(50);
+        intakeSparkL.setSecondaryCurrentLimit(50);
         intakeSparkL.setIdleMode(IdleMode.kCoast);
         intakeSparkR.setIdleMode(IdleMode.kCoast);
 
@@ -88,8 +88,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeIn(double speed){
-        intakeSparkR.set(speed);
-        intakeSparkL.set(-speed);
+        intakeSparkR.set(-speed);
+        intakeSparkL.set(speed);
 
     }
 
@@ -99,8 +99,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeOut(double speed){
-        intakeSparkR.set(-speed);
-        intakeSparkL.set(speed);
+        intakeSparkR.set(speed);
+        intakeSparkL.set(-speed);
 
     }
 
