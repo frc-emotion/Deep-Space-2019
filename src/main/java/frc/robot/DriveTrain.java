@@ -98,10 +98,9 @@ public class DriveTrain {
         drive = new DifferentialDrive(lSpeedGroup, rSpeedGroup);
 
         // add pid controllers from sensors
-        lemonPidControl = new PIDControl(0.029f, 0.0004f, 0);
+        lemonPidControl = new PIDControl(0.02f, 0.0004f, 0);
         //lemonPidControl.setMaxSpeed(0.6);
-
-        // lemonPidControl.setScale(.01);
+       // lemonPidControl.setScale(.01);
 
         gyroPidControl = new PIDControl(0.4f, 0f, 0f);
         gyroPidControl.setMaxSpeed(0.5);
@@ -134,14 +133,14 @@ public class DriveTrain {
             Robot.lemonTorch.switchPipelines(0);
             drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
         } 
-        else if(Robot.driveController.getYButton()){
+        else if(Robot.driveController.getXButton()){
             drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft), gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
         }
         else {
             runTankDrive();
         }
 
-        if(Robot.driveController.getYButtonPressed()){
+        if(Robot.driveController.getXButtonPressed()){
             holdHeading = Robot.gyro.getAngle();
         }
         if (Robot.driveController.getAButtonReleased()) {
