@@ -99,6 +99,12 @@ public class RobotFlipper {
 
         if (screwTalon.getOutputCurrent() >= 14) {
             disableScrew = true;
+            Robot.operatorController.setRumble(RumbleType.kRightRumble, 0.5);
+            Robot.operatorController.setRumble(RumbleType.kLeftRumble, 0.5);
+        }
+        else{
+            Robot.operatorController.setRumble(RumbleType.kRightRumble, 0);
+            Robot.operatorController.setRumble(RumbleType.kLeftRumble, 0);
         }
     }
 
