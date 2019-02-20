@@ -49,14 +49,14 @@ public class Constants {
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
 
     /* Max Currents that can be sent to Neos in Amps */
-    public static final int MAX_CURRENT = 35;
+    public static final int MAX_CURRENT = 45;
     public static final int MAX_WRIST_CURRENT = 20;
 
     public static final double WRIST_PWR_SCALE = 0.5;
     public static final double ARM_PWR_SCALE = 0.6;
 
     public static final double TURBO_SPEED = 0.95;
-    public static final double REGULAR_SPEED = 0.7;
+    public static final double REGULAR_SPEED = 0.75;
     public static final double SLOW_SPEED = 0.4;
 
     // \\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\

@@ -88,8 +88,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeIn(double speed){
-        intakeSparkR.set(-speed);
-        intakeSparkL.set(speed);
+        intakeSparkR.set(speed);
+        intakeSparkL.set(-speed);
 
     }
 
@@ -99,8 +99,8 @@ public class Intake extends Thread{
      * @return void
      */
     public void intakeOut(double speed){
-        intakeSparkR.set(speed);
-        intakeSparkL.set(-speed);
+        intakeSparkR.set(-speed);
+        intakeSparkL.set(speed);
 
     }
 
@@ -121,7 +121,7 @@ public class Intake extends Thread{
      * @return void
      */
     public void releaseHatch(){
-        hatchSolenoid.set(Value.kForward);
+        hatchSolenoid.set(Value.kReverse);
     }
 
     /**
@@ -130,7 +130,7 @@ public class Intake extends Thread{
      * @return void
      */
     public void resetSolenoid(){
-        hatchSolenoid.set(Value.kReverse);
+        hatchSolenoid.set(Value.kForward);
     }
 
 
