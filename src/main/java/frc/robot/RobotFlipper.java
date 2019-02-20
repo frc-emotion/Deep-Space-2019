@@ -122,7 +122,7 @@ public class RobotFlipper {
         // }
 
         double speed = constantB * climbPower;
-        int pov = Robot.climbController.getPOV();
+        int pov = Robot.operatorController.getPOV();
         switch (pov) {
         case 0:
             climbDrive.tankDrive(speed, speed);
@@ -130,6 +130,8 @@ public class RobotFlipper {
         case 180:
             climbDrive.tankDrive(-speed, -speed);
             break;
+        case -1:
+             climbDrive.tankDrive(0, 0);
         default:
             climbDrive.tankDrive(0, 0);
             break;

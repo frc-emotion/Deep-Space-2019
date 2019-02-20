@@ -28,17 +28,14 @@ public class Robot extends TimedRobot {
 
   public static XboxController driveController;
   public static XboxController operatorController;
-  public static Joystick climbController;
+  //public static Joystick climbController;
   public static LemonTorch lemonTorch;
 
   // Mechs
-  // Arm armMech;
-  // Wrist wristMech;
   Pivot armMech;
   Pivot wristMech;
   Intake intakeMech;
   DriveTrain driveTrain;
-
   RobotFlipper flipMech;
 
   // Nav-X Gyro
@@ -52,10 +49,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
-    climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
+    //climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
 
-    // armMech = new Arm();
-    // wristMech = new Wrist();
     armMech = new Pivot("ARM", Constants.ARM_SPARK_CID, MotorType.kBrushless, Constants.MAX_CURRENT, Hand.kLeft);
     armMech.getPidControl().setPID(0.014f, 0f, 0f);
     armMech.getPidControl().setMaxSpeed(0.5);
