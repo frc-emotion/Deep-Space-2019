@@ -60,22 +60,22 @@ public class Robot extends TimedRobot {
     armMech.getPidControl().setPID(0.014f, 0f, 0f);
     armMech.getPidControl().setMaxSpeed(0.5);
 
-    armMech.setMacro('a', 17.64); //cargo lvl2
-    armMech.setMacro('b', 52.4); //bottom hatch placement;
-    armMech.setMacro('x', 47.5); //cargo bottom;
-    armMech.setMacro('y', 53); //hatch floor pickup
+    armMech.setMacro('a', 17.64); // cargo lvl2
+    armMech.setMacro('b', 52.4); // bottom hatch placement;
+    armMech.setMacro('x', 47.5); // cargo bottom;
+    armMech.setMacro('y', 53); // hatch floor pickup
 
     armMech.setScale(Constants.ARM_PWR_SCALE);
 
-
-    wristMech = new Pivot("WRIST", Constants.WRIST_SPARK_CID, MotorType.kBrushless, Constants.MAX_WRIST_CURRENT, Hand.kRight);
+    wristMech = new Pivot("WRIST", Constants.WRIST_SPARK_CID, MotorType.kBrushless, Constants.MAX_WRIST_CURRENT,
+        Hand.kRight);
     wristMech.getPidControl().setPID(.014f, 0.0001f, 0f);
     wristMech.getPidControl().setMaxSpeed(0.5);
 
-    wristMech.setMacro('a', 4.07); //cargo lvl2
-    wristMech.setMacro('b', -5.7); //bottom hatch placement;
-    wristMech.setMacro('x', 18.95); //cargo bottom;
-    wristMech.setMacro('y', 14.95); //hatch floor pickup
+    wristMech.setMacro('a', 4.07); // cargo lvl2
+    wristMech.setMacro('b', -5.7); // bottom hatch placement;
+    wristMech.setMacro('x', 18.95); // cargo bottom;
+    wristMech.setMacro('y', 14.95); // hatch floor pickup
 
     wristMech.setCurve(2.2);
     wristMech.setScale(Constants.WRIST_PWR_SCALE);
@@ -86,7 +86,6 @@ public class Robot extends TimedRobot {
       }
     });
     t.start();
-
 
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
@@ -133,6 +132,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
+    intakeMech.run();
+    wristMech.run();
+    lemonTorch.update();
+    driveTrain.run();
+
+    flipMech.run();
   }
 
   @Override
@@ -153,8 +158,8 @@ public class Robot extends TimedRobot {
     flipMech.run();
     updateSmartDashboard();
   }
-  
-  /** 
+
+  /**
    * Update smartdashboard values of static robot objs
    * 
    * @return void
