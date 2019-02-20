@@ -97,7 +97,7 @@ public class RobotFlipper {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
-        if (screwTalon.getOutputCurrent() >= 17) {
+        if (screwTalon.getOutputCurrent() >= 14) {
             disableScrew = true;
         }
     }
