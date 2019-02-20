@@ -107,26 +107,39 @@ public class RobotFlipper {
      */
     void runClimber() {
         int constantA = 1, constantB = -1; // for easy direction change
-        double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
-        climbPower = 0.95;
-        climbExponent = SmartDashboard.getNumber("Climb Exponent", 1.1);
+        // double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
+        climbPower = SmartDashboard.getNumber("Climb Power", 0.5);
         // if (stickInput > 0.2) {
         // constant = 1;
         // } else if (stickInput < -0.2) {
         // constant = -1;
         // }
 
-        if (Math.abs(stickInput) > 0.2) {
-            // set the motor (which sets the other automatically) to run based on joystick
-            // climbSparkA.set(constantA * climbPower * stickInput);
-            // climbSparkB.set(constantB * climbPower * stickInput);
-
-            double speed = constantB * climbPower * stickInput;
-
-            climbDrive.tankDrive(speed, speed, true);
-        } else {
+        double speed = constantB * climbPower;
+        int pov = Robot.climbController.getPOV();
+        switch (pov) {
+        case 0:
+            climbDrive.tankDrive(speed, speed);
+            break;
+        case 180:
+            climbDrive.tankDrive(-speed, -speed);
+            break;
+        default:
             climbDrive.tankDrive(0, 0);
+            break;
         }
+
+        // if (Math.abs(stickInput) > 0.2) {
+        //     // set the motor (which sets the other automatically) to run based on joystick
+        //     // climbSparkA.set(constantA * climbPower * stickInput);
+        //     // climbSparkB.set(constantB * climbPower * stickInput);
+
+        //     double speed = constantB * climbPower * stickInput;
+
+        //     climbDrive.tankDrive(speed, speed, true);
+        // } else {
+        //     climbDrive.tankDrive(0, 0);
+        // }
     }
 
     /**
@@ -134,7 +147,7 @@ public class RobotFlipper {
      */
     void initShuffleBoard() {
         SmartDashboard.putNumber("Climb Power", climbPower);
-        SmartDashboard.putNumber("Climb Exponent", climbExponent);
+        // SmartDashboard.putNumber("Climb Exponent", climbExponent);
     }
 
     /**
