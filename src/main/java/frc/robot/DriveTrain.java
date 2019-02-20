@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import com.revrobotics.CANEncoder;
@@ -8,14 +7,10 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
 
 /**
  * Class that runs the Drive Train
@@ -39,14 +34,7 @@ public class DriveTrain {
     // group the sparks
     private SpeedControllerGroup lSpeedGroup, rSpeedGroup;
 
-    // choices for dropdown menu on shuffleboard
-    private SendableChooser<Integer> driveChoices, pathChoices;
-
     private double drivePower, driveExponent;
-
-    // pathfinder helper object
-    // private PathConverter pathConverter;
-    private boolean pathDone;
 
     // pid controls
     private PIDControl lemonPidControl;
@@ -55,7 +43,6 @@ public class DriveTrain {
     private double holdHeading = 0.0;
 
     public DriveTrain() {
-        pathDone = false;
         // drive power (max 1)
         drivePower = 0.7;
         // deadzone exponent
@@ -99,8 +86,8 @@ public class DriveTrain {
 
         // add pid controllers from sensors
         lemonPidControl = new PIDControl(0.025f, 0.0004f, 0);
-        //lemonPidControl.setMaxSpeed(0.6);
-       // lemonPidControl.setScale(.01);
+        // lemonPidControl.setMaxSpeed(0.6);
+        // lemonPidControl.setScale(.01);
 
         gyroPidControl = new PIDControl(0.4f, 0f, 0f);
         gyroPidControl.setMaxSpeed(0.5);
@@ -113,95 +100,32 @@ public class DriveTrain {
     public void run() {
         // workShuffleBoard();
 
-        // int driveChoice = driveChoices.getSelected();
-        // switch (driveChoice) {
-        // case 0:
-        // // Lets worry about this after drive train works
-        // // runPathFinderChoices();
-        // break;
-        // case 1:
-        // runArcadeDrive();
-        // default:
-        // runTankDrive();
-        // break;
-        // }
-
         // drive overrides
         if (Robot.driveController.getAButton()) {
             // Robot.lemonTorch.update();
             // System.out.println(Robot.lemonTorch.getErrorXBall());
             Robot.lemonTorch.switchPipelines(0);
             drive.arcadeDrive(0.55, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
-        } 
-        else if(Robot.driveController.getXButton()){
-            drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft), gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
-        }
-        else if(Robot.driveController.getBButton()){
+        } else if (Robot.driveController.getXButton()) {
+            drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft),
+                    gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
+        } else if (Robot.driveController.getBButton()) {
             Robot.lemonTorch.switchPipelines(1);
             drive.arcadeDrive(0, lemonPidControl.getValue(0, -Robot.lemonTorch.getErrorX()));
-        }
-        else {
+        } else {
             runTankDrive();
         }
 
-        if(Robot.driveController.getXButtonPressed()){
+        if (Robot.driveController.getXButtonPressed()) {
             holdHeading = Robot.gyro.getAngle();
         }
         if (Robot.driveController.getAButtonReleased()) {
             lemonPidControl.cleanup();
         }
-        if(Robot.driveController.getBButtonReleased()){
+        if (Robot.driveController.getBButtonReleased()) {
             lemonPidControl.cleanup();
         }
 
-    }
-
-    /**
-     * Contains the logic that it will only do pathfinder once, and will only go to
-     * manual drive after pathfinder.
-     */
-    private void runPathFinderChoices() {
-        if (!pathDone) {
-            runPathFinder();
-            pathDone = true;
-        }
-        // if (pathConverter.isDriveAllowed())
-        // runTankDrive();
-    }
-
-    /**
-     * Imports csv and converts it to trajectory, then passing in the trajectory to
-     * the PathConverter object.
-     */
-    public void runPathFinder() {
-        int pathChoice = pathChoices.getSelected().intValue();
-        String pathName = "";
-
-        switch (pathChoice) {
-        case 0:
-            pathName = "righthab";
-            break;
-        case 1:
-            pathName = "straighthab";
-            break;
-        default:
-            // do nothing
-            break;
-        }
-
-        if (!pathName.equals("")) {
-            String dir = Filesystem.getDeployDirectory().toString();
-            String fileName = pathName + ".pf1.csv";
-
-            File trajFile = new File(dir + "/" + fileName);
-
-            Trajectory traj = Pathfinder.readFromCSV(trajFile);
-
-            // pathConverter = new PathConverter(this, traj);
-            // pathConverter.setUpFollowers();
-
-            // pathConverter.followPath();
-        }
     }
 
     /**
@@ -273,21 +197,6 @@ public class DriveTrain {
     private void initShuffleBoard() {
         SmartDashboard.putNumber("Drive Power", 0.7);
         SmartDashboard.putNumber("Drive Exponent", 1.5);
-
-        SmartDashboard.putString("Pathfinder Job", "NotFinished");
-
-        driveChoices = new SendableChooser<Integer>();
-        driveChoices.setDefaultOption("Tank Drive", -1);
-        driveChoices.addOption("PathFinder + Tank Drive", 0);
-        driveChoices.addOption("Arcade Drive", 1);
-        SmartDashboard.putData("Drive Choices", driveChoices);
-
-        pathChoices = new SendableChooser<Integer>();
-        pathChoices.setDefaultOption("No Path", -1);
-        // this is just a place holder till we get the real paths
-        pathChoices.addOption("Sample Right Hab", 0);
-        pathChoices.addOption("Sample Straight Hab", 1);
-        SmartDashboard.putData("PathFinder Choices", pathChoices);
     }
 
     /**
