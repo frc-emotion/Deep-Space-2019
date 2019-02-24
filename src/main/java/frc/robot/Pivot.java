@@ -5,10 +5,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Pivot extends Thread {
+public abstract class Pivot extends Thread {
     private CANSparkMax sparkMax; // Spark Max controller from REV Robotics. Controls NEO motor
     private CANEncoder encoder; // pivot encoder, built into the NEO
     private PIDControl pidControl;
