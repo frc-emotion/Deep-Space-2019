@@ -68,8 +68,8 @@ public class Pivot extends Thread {
         }
 
         if (Math.abs(Robot.operatorController.getY(hand)) > 0.2) { // if joysick axis is above a threshold
-                                                                         // activate
-                                                                         // manual mode and diable pid
+                                                                   // activate
+                                                                   // manual mode and diable pid
             // disable anything related to macros of pid hold so that it doesnt interfere
             // with the operator control
             holdEnabled = false;
@@ -78,14 +78,17 @@ public class Pivot extends Thread {
             pidControl.cleanup();
 
             manualMove();
-        } else if (Robot.operatorController.getAButtonPressed()) { 
-            toggleMacro(0);
-        } else if (Robot.operatorController.getBButtonPressed()) { 
-            toggleMacro(1);
-        } else if (Robot.operatorController.getXButtonPressed()) { 
-            toggleMacro(2);
-        } else if (Robot.operatorController.getYButtonPressed()) { 
-            toggleMacro(3);
+        } 
+        else if (getToggled() != -1) { // see if any macro is enabled. If not, start checking button presses If yes skip over this logic
+            if (Robot.operatorController.getAButton()) {
+                toggleMacro(0);
+            } else if (Robot.operatorController.getBButton()) {
+                toggleMacro(1);
+            } else if (Robot.operatorController.getXButton()) {
+                toggleMacro(2);
+            } else if (Robot.operatorController.getYButton()) {
+                toggleMacro(3);
+            }
         }
         // else if(Robot.operatorController.getStartButtonReleased()){
         // startEncoderVal = myEncoder.getPosition();
@@ -103,6 +106,7 @@ public class Pivot extends Thread {
         }
 
     }
+
     /**
      * @return the pidControl
      */
@@ -144,13 +148,18 @@ public class Pivot extends Thread {
      * @return void
      */
     public void toggleMacro(int index) {
-        disableMacros();
-        macroEnabled = true;
-        if (macroCheck[index] == 0) { // toggle macros if not active
+        if (macroCheck[index] != 1) {
+            disableMacros();
             macroCheck[index] = 1;
-        } else {
-            macroCheck[index] = 0;
+            macroEnabled = true;
         }
+        // disableMacros();
+        // macroEnabled = true;
+        // if (macroCheck[index] == 0) { // toggle macros if not active
+        // macroCheck[index] = 1;
+        // } else {
+        // macroCheck[index] = 0;
+        // }
     }
 
     /**

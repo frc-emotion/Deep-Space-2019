@@ -75,12 +75,12 @@ public class Robot extends TimedRobot {
     wristMech.setCurve(2.2);
     wristMech.setScale(Constants.WRIST_PWR_SCALE);
 
-    Thread t = new Thread(() -> {
-      while (!Thread.interrupted()) {
-        armMech.run();
-      }
-    });
-    t.start();
+    // Thread t = new Thread(() -> {
+    //   while (!Thread.interrupted()) {
+    //     armMech.run();
+    //   }
+    // });
+    // t.start();
 
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     intakeMech.run();
+    armMech.run();
     wristMech.run();
     lemonTorch.update();
     driveTrain.run();
@@ -146,6 +147,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     intakeMech.run();
+    armMech.run();
     wristMech.run();
     lemonTorch.update();
     driveTrain.run();
