@@ -67,19 +67,20 @@ public class Pivot extends Thread {
             holdEnabled = true;
         }
 
+        int toggled = getToggled();
         if (Math.abs(Robot.operatorController.getY(hand)) > 0.2) { // if joysick axis is above a threshold
                                                                    // activate
                                                                    // manual mode and diable pid
             // disable anything related to macros of pid hold so that it doesnt interfere
             // with the operator control
             holdEnabled = false;
-            macroEnabled = false;
+            macroEnabled = false;   
             disableMacros();
             pidControl.cleanup();
 
             manualMove();
         } 
-        else if (getToggled() != -1) { // see if any macro is enabled. If not, start checking button presses If yes skip over this logic
+        else if (toggled != -1) { // see if any macro is enabled. If not, start checking button presses If yes skip over this logic
             if (Robot.operatorController.getAButton()) {
                 toggleMacro(0);
             } else if (Robot.operatorController.getBButton()) {
@@ -100,7 +101,7 @@ public class Pivot extends Thread {
             }
         }
 
-        int toggled = getToggled();
+
         if (toggled != -1 && macroEnabled) {
             sparkMax.set(pidControl.getValue(macroPosList[toggled], encoder.getPosition()));
         }
