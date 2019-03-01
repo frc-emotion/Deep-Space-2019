@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -112,7 +113,7 @@ public class RobotFlipper {
      * Runs the climber mechanism
      */
     void runClimber() {
-        int constantA = 1, constantB = -1; // for easy direction change
+        int dirConstant = 1; // for easy direction change
         // double stickInput = Robot.climbController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
         climbPower = SmartDashboard.getNumber("Climb Power", 0.5);
         // if (stickInput > 0.2) {
@@ -121,21 +122,21 @@ public class RobotFlipper {
         // constant = -1;
         // }
 
-        double speed = constantB * climbPower;
-        int pov = Robot.operatorController.getPOV();
-        switch (pov) {
-        case 0:
-            climbDrive.tankDrive(speed, speed);
-            break;
-        case 180:
-            climbDrive.tankDrive(-speed, -speed);
-            break;
-        case -1:
-             climbDrive.tankDrive(0, 0);
-        default:
-            climbDrive.tankDrive(0, 0);
-            break;
-        }
+        // double speed = constantB * climbPower;
+        // int pov = Robot.operatorController.getPOV();
+        // switch (pov) {
+        // case 0:
+        //     climbDrive.tankDrive(speed, speed);
+        //     break;
+        // case 180:
+        //     climbDrive.tankDrive(-speed, -speed);
+        //     break;
+        // case -1:
+        //      climbDrive.tankDrive(0, 0);
+        // default:
+        //     climbDrive.tankDrive(0, 0);
+        //     break;
+        // }
 
         // if (Math.abs(stickInput) > 0.2) {
         //     // set the motor (which sets the other automatically) to run based on joystick
@@ -148,6 +149,24 @@ public class RobotFlipper {
         // } else {
         //     climbDrive.tankDrive(0, 0);
         // }
+        if(Robot.operatorController.getBumper(Hand.kLeft)){
+            double stickInput = Robot.operatorController.getRawAxis(Constants.CLIMBER_CONTROLLER_AXIS);
+            if (stickInput > 0.2) {
+                dirConstant = 1;
+            } 
+            else if (stickInput < -0.2) {
+                dirConstant = -1;
+            }
+            if(Math.abs(stickInput) > 0.2){
+                climbDrive.tankDrive(dirConstant*climbPower* Math.pow(Math.abs(stickInput), 2), dirConstant*climbPower*Math.pow(Math.abs(stickInput), 2));
+            }
+            else{
+                climbDrive.tankDrive(0, 0);
+            }
+        }
+        else{
+            climbDrive.tankDrive(0, 0);
+        }
     }
 
     /**

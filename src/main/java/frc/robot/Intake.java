@@ -63,10 +63,10 @@ public class Intake extends Thread{
             stopIntake();
         }
 
-        if(Robot.operatorController.getBumperPressed(Hand.kLeft)){
+        if(Robot.operatorController.getBumperPressed(Hand.kRight)){
             releaseHatch();
         }
-        else if(Robot.operatorController.getBumperReleased(Hand.kLeft)){
+        else if(Robot.operatorController.getBumperReleased(Hand.kRight)){
             resetSolenoid();
         }
 
