@@ -45,7 +45,7 @@ public class Pivot extends Thread {
         macroPosList[2] = startEncoderVal;
         macroPosList[3] = startEncoderVal;
 
-        updateSmartDashboard();
+        //updateSmartDashboard();
     }
 
     /**
@@ -57,7 +57,7 @@ public class Pivot extends Thread {
      */
     @Override
     public void run() {
-        updateSmartDashboard();
+        //updateSmartDashboard();
         // if controller is under a threshold and not in hold mode, then the operator
         // has probably let go of the jstick
         // so activate the hold mode

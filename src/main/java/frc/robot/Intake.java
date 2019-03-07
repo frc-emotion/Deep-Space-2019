@@ -41,7 +41,7 @@ public class Intake extends Thread{
 
         hatchSolenoid = new DoubleSolenoid(0, 1);
         // solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
-        updateSmartDashboard();
+        //updateSmartDashboard();
     }
 
     /**
@@ -51,7 +51,7 @@ public class Intake extends Thread{
      */
     @Override
     public void run() {
-        updateSmartDashboard();
+        //updateSmartDashboard();
         if(Robot.operatorController.getTriggerAxis(Hand.kLeft) >= deadzone){ // check if trigger is pressed over deadzone
            intakeIn(Robot.operatorController.getTriggerAxis(Hand.kLeft) * 0.5);
         
