@@ -1,6 +1,7 @@
 package frc.robot;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.revrobotics.CANEncoder;
@@ -181,12 +182,7 @@ public class DriveTrain {
         case 1:
             pathName = "straighthab";
             break;
-        default:
-            // do nothing
-            break;
-        }
-
-        if (pathChoice == 2) {
+        case 2:
             Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
                     Trajectory.Config.SAMPLES_HIGH, 0.02, 0.4, 0.8, 5.0);
             Trajectory trajectory = Pathfinder.generate(PathTrajectories.rightHab, config);
@@ -194,17 +190,27 @@ public class DriveTrain {
             pathConverter = new PathConverter(this, trajectory);
             pathConverter.setUpFollowers();
             pathConverter.followPath();
-        } else if (!pathName.equals("")) {
+            break;
+        default:
+            // do nothing
+            break;
+        }
+
+        if (!pathName.equals("")) {
             String dir = Filesystem.getDeployDirectory().toString();
             String fileName = pathName + ".pf1.csv";
 
             File trajFile = new File(dir + "/" + fileName);
 
-            Trajectory traj = Pathfinder.readFromCSV(trajFile);
-
-            pathConverter = new PathConverter(this, traj);
-            pathConverter.setUpFollowers();
-            pathConverter.followPath();
+            Trajectory traj = null;
+            try {
+                traj = Pathfinder.readFromCSV(trajFile);
+                pathConverter = new PathConverter(this, traj);
+                pathConverter.setUpFollowers();
+                pathConverter.followPath();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -75,8 +75,8 @@ public class PathConverter {
         double p = 1, i = 0, d = 0;
 
         Robot.gyro.reset();
-        // lEnc.setPosition(0);
-        // rEnc.setPosition(0);
+        lEnc.setPosition(0);
+        rEnc.setPosition(0);
 
         // give the followers the trajectories (switch bexause it is buggy)
         lFollower.setTrajectory(modifier.getRightTrajectory());
@@ -133,7 +133,7 @@ public class PathConverter {
             r = constant * rFollower.calculate(Math.abs((int) rEnc.getPosition()));
 
             // calculate angle heading
-            gyro_heading = Robot.gyro.getAngle();
+            gyro_heading = -Robot.gyro.getYaw();
             desired_heading = -Pathfinder.r2d(lFollower.getHeading());
             angleDifference = Pathfinder.boundHalfDegrees(desired_heading - gyro_heading);
             kG = 0.8 * (-1.0 / 80.0);
@@ -191,11 +191,11 @@ public class PathConverter {
      * Updates dashboard values
      */
     private void workShuffleBoard() {
-        SmartDashboard.putNumber("Right Drive Encoder Position", rEnc.getPosition());
-        SmartDashboard.putNumber("Right Drive Encoder Velocity (rpm)", rEnc.getVelocity());
+        // SmartDashboard.putNumber("Right Drive Encoder Position", rEnc.getPosition());
+        // SmartDashboard.putNumber("Right Drive Encoder Velocity (rpm)", rEnc.getVelocity());
 
-        SmartDashboard.putNumber("Left Drive Encoder Position", lEnc.getPosition());
-        SmartDashboard.putNumber("Left Drive Encoder Velocity (rpm)", lEnc.getVelocity());
+        // SmartDashboard.putNumber("Left Drive Encoder Position", lEnc.getPosition());
+        // SmartDashboard.putNumber("Left Drive Encoder Velocity (rpm)", lEnc.getVelocity());
 
         SmartDashboard.putNumber("Nav-X Angle", Robot.gyro.getAngle());
     }
