@@ -6,22 +6,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LineSensors{
     AnalogInput lLineFollower;
     AnalogInput rLineFollower;
-    AnalogInput mLineFollower;
+    //AnalogInput mLineFollower;
     public LineSensors(){
         lLineFollower = new AnalogInput(0);
         rLineFollower = new AnalogInput(1);
-        mLineFollower = new AnalogInput(2);
+        //mLineFollower = new AnalogInput(2);
 
         rLineFollower.setOversampleBits(8);
         lLineFollower.setOversampleBits(8);
-        mLineFollower.setOversampleBits(8);
+        //mLineFollower.setOversampleBits(8);
         
     }
     public void run(){
         SmartDashboard.putNumber("Line Follower R", rLineFollower.getValue());
         SmartDashboard.putNumber("Line Follower L", lLineFollower.getValue());
 
-        SmartDashboard.putNumber("Line Follower M", lLineFollower.getValue());
+        //SmartDashboard.putNumber("Line Follower M", lLineFollower.getValue());
 
     }
     public double getTurnValue(){
