@@ -98,6 +98,56 @@ public class DriveTrain {
         // initShuffleBoard();
     }
 
+
+
+    boolean kidsDisabled = false;
+    double childScale  = 0.6, childExp = 2;
+
+
+    public void runKidsMode(){
+
+        SmartDashboard.putBoolean("Kids Mode", !kidsDisabled);
+
+        if (!kidsDisabled)
+            runForzaDrive();
+        else
+            runTankDrive();
+
+        if (Robot.driveController.getBumper(Hand.kRight))
+            kidsDisabled = true;
+        else
+            kidsDisabled = false;
+
+    }
+
+    private void runForzaDrive() {
+        int constX = -1, constY = 1;
+
+        double xAxis = Robot.operatorController.getX(Hand.kRight);
+        double yAxis = Robot.operatorController.getY(Hand.kLeft);
+
+        if (yAxis < 0) {
+            constY *= 1;
+        } else if (yAxis > 0) {
+            constY *= -1;
+        }
+
+        if (xAxis < 0) {
+            constX *= 1;
+        } else if (xAxis > 0) {
+            constX *= -1;
+        }
+
+        childScale = SmartDashboard.getNumber("Child Scale", 0.6);
+        childExp = SmartDashboard.getNumber("Child Exponent", 2);
+
+        double driveY = constY * childScale * Math.pow(Math.abs(yAxis), childExp);
+        double driveX = constX * childScale * Math.pow(Math.abs(xAxis), childExp);
+
+        drive.arcadeDrive(driveY, driveX);
+    }
+
+
     /**
      * Method that will be called in teleop
      */
@@ -182,8 +232,8 @@ public class DriveTrain {
 
         if (Robot.driveController.getBumper(Hand.kLeft))
             drivePower = Constants.SLOW_SPEED;
-        else if (Robot.driveController.getBumper(Hand.kRight))
-            drivePower = Constants.TURBO_SPEED;
+        //else if (Robot.driveController.getBumper(Hand.kRight))
+        //    drivePower = Constants.TURBO_SPEED;
         else
             drivePower = Constants.REGULAR_SPEED;
 

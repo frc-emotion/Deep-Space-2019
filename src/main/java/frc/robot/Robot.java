@@ -9,12 +9,11 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -28,9 +27,9 @@ public class Robot extends TimedRobot {
 
   public static XboxController driveController;
   public static XboxController operatorController;
-  //public static Joystick climbController;
+  // public static Joystick climbController;
   public static LemonTorch lemonTorch;
-  //public static LineSensors lineSensors;
+  // public static LineSensors lineSensors;
   // Mechs
   Pivot armMech;
   Pivot wristMech;
@@ -41,21 +40,24 @@ public class Robot extends TimedRobot {
   // Nav-X Gyro
   public static AHRS gyro;
 
+  private SendableChooser<Integer> driveModes;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
+    driveModes = new SendableChooser<Integer>();
     driveController = new XboxController(Constants.DRIVE_CONTROLLER_PORT);
     operatorController = new XboxController(Constants.OPER_CONTROLLER_PORT);
-    //climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
+    // climbController = new Joystick(Constants.CLIMB_CONTROLLER_PORT);
 
     armMech = new Pivot("ARM", Constants.ARM_SPARK_CID, MotorType.kBrushless, Constants.MAX_CURRENT, Hand.kLeft);
     armMech.getPidControl().setPID(0.014f, 0f, 0f);
     armMech.getPidControl().setMaxSpeed(0.5);
 
-    //armMech.setMacro('a', 17.64); // cargo lvl2
+    // armMech.setMacro('a', 17.64); // cargo lvl2
     armMech.overrideMacro('a');
     armMech.setMacro('b', 52.4); // bottom hatch placement;
     armMech.setMacro('x', 46.7); // cargo bottom;
@@ -68,7 +70,7 @@ public class Robot extends TimedRobot {
     wristMech.getPidControl().setPID(.0142f, 0.00015f, 0f);
     wristMech.getPidControl().setMaxSpeed(0.5);
 
-    //wristMech.setMacro('a', 8.21); // cargo lvl2
+    // wristMech.setMacro('a', 8.21); // cargo lvl2
     wristMech.overrideMacro('a');
     wristMech.setMacro('b', -5.7); // bottom hatch placement;
     wristMech.setMacro('x', 16.6); // cargo bottom;
@@ -78,21 +80,22 @@ public class Robot extends TimedRobot {
     wristMech.setScale(Constants.WRIST_PWR_SCALE);
 
     // Thread t = new Thread(() -> {
-    //   while (!Thread.interrupted()) {
-    //     armMech.run();
-    //   }
+    // while (!Thread.interrupted()) {
+    // armMech.run();
+    // }
     // });
     // t.start();
 
     intakeMech = new Intake();
     driveTrain = new DriveTrain();
     lemonTorch = new LemonTorch();
-    //lineSensors = new LineSensors();
+    // lineSensors = new LineSensors();
     flipMech = new RobotFlipper();
 
     gyro = new AHRS(Port.kUSB);
-    //lemonTorch.update();
-    //updateSmartDashboard();
+    // lemonTorch.update();
+    // updateSmartDashboard();
+    initSmartDashboard();
   }
 
   /**
@@ -136,7 +139,6 @@ public class Robot extends TimedRobot {
     lemonTorch.update();
     driveTrain.run();
 
-    
   }
 
   @Override
@@ -149,23 +151,40 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    intakeMech.run();
-    armMech.run();
-    if(operatorController.getBumper(Hand.kLeft)){
-      flipMech.runClimber();
-    }
-    else{
-      wristMech.run();
-    }
-    //flipMech.tester();
-    
-    flipMech.runScrew();
-    lemonTorch.update();
-    //lineSensors.update();
-    driveTrain.run();
 
-    
-    //updateSmartDashboard();
+    switch (driveModes.getSelected()) {
+    case 0:
+      driveTrain.runKidsMode();
+      break;
+    default:
+      intakeMech.run();
+      armMech.run();
+      if (operatorController.getBumper(Hand.kLeft)) {
+        flipMech.runClimber();
+      } else {
+        wristMech.run();
+      }
+      // flipMech.tester();
+
+      flipMech.runScrew();
+      lemonTorch.update();
+      // lineSensors.update();
+      driveTrain.run();
+
+      // updateSmartDashboard();
+      break;
+    }
+  }
+
+  /**
+   * Init smartdashboard values of static robot objs
+   * 
+   * @return void
+   */
+  public void initSmartDashboard() {
+    driveModes.setDefaultOption("Regular Mode", -1);
+    driveModes.addOption("Kids Mode", 0);
+    SmartDashboard.putData("Drive Modes", driveModes);
   }
 
   /**
