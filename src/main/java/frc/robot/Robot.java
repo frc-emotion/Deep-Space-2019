@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
   // Nav-X Gyro
   public static AHRS gyro;
 
-  private SendableChooser<Integer> driveModes;
+ SendableChooser<Integer> driveModes;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -109,7 +109,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
   }
 
   /**

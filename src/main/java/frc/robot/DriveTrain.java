@@ -47,6 +47,10 @@ public class DriveTrain {
 
     private double constant = 1;
     public DriveTrain() {
+
+        SmartDashboard.putNumber("Child Scale", 0.6);
+        SmartDashboard.putNumber("Child Exponent", 2);
+
         // drive power (max 1)
         drivePower = 0.7;
         // deadzone exponent

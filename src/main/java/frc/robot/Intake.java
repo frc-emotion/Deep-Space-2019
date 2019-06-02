@@ -80,23 +80,23 @@ public class Intake extends Thread{
         
         }
         else if(Robot.operatorController.getTriggerAxis(Hand.kRight) >= deadzone){
-            intakeOut(0.3);
-            //intakeOut(Math.pow(Math.abs(Robot.operatorController.getTriggerAxis(Hand.kRight)), 2)*0.3);    
+            //intakeOut(0.3);
+            intakeOut(Math.pow(Math.abs(Robot.operatorController.getTriggerAxis(Hand.kRight)), 2)*0.8);    
         }
         else{
             stopIntake();
         }
 
-        // if(Robot.operatorController.getBumperPressed(Hand.kRight)){
-        //     if(hatchSol){
-        //         resetSolenoid();
-        //         hatchSol = false;
-        //     }
-        //     else{
-        //         releaseHatch();
-        //         hatchSol = true;
-        //     }
-        // }
+        if(Robot.operatorController.getBumperPressed(Hand.kRight)){
+            if(hatchSol){
+                resetSolenoid();
+                hatchSol = false;
+            }
+            else{
+                releaseHatch();
+                hatchSol = true;
+            }
+        }
         if(Robot.operatorController.getBumperPressed(Hand.kRight)){
             releaseHatch();
         }
@@ -110,10 +110,10 @@ public class Intake extends Thread{
         }
         else{
             unSucc.set(false);
-           // succ.set(ControlMode.PercentOutput, 1);
+            succ.set(ControlMode.PercentOutput, 1);
         }
         
-        //succ.set(ControlMode.PercentOutput, 1);
+        succ.set(ControlMode.PercentOutput, 1);
     }
 
     /**
