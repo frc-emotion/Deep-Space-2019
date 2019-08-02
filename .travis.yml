@@ -4,4 +4,4 @@ install: true
 script: ./gradlew build
 jdk: oraclejdk11
 notifications:
-  slack: team2658cibuilds:eVRevD2hbTknKlV8ycrLsPQa
+  slack: 2658e-motion:XitMY7yI3YU25bWEvRTNTozc
