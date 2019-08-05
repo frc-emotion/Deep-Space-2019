@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotBase;
+
 /**
  * Do NOT add any static variables to this class, or any initialization at all.
  * Unless you know what you are doing, do not modify this file except to change
@@ -24,7 +26,7 @@ public final class Main {
    */
   public static void main(String... args) {
     /* "Sometimes my genius is... it's almost frightening" */
-    Robot.Win(true);
+    RobotBase.startRobot(Robot::new);
   }
 
 }

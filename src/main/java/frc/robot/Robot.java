@@ -10,8 +10,6 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -38,10 +36,6 @@ public class Robot extends TimedRobot {
   Intake intakeMech;
   DriveTrain driveTrain;
   RobotFlipper flipMech;
-
-  static void Win(boolean should_we_win){
-    RobotBase.startRobot(Robot::new);
-  }
 
   // Nav-X Gyro
   public static AHRS gyro;
