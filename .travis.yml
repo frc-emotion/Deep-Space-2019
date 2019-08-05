@@ -8,4 +8,4 @@ before_install:
 script: ./gradlew build
 jdk: oraclejdk11
 notifications:
-  slack: 2658e-motion:XitMY7yI3YU25bWEvRTNTozc
+  slack: 2658e-motion:7OEqUxhWCy0yM0iC6YbPe0SE
