@@ -3,4 +3,8 @@
   
 FRC Deep Space 2019 Java Code!
 
-Written By: Neal Chokshi and Gokul Swaminathan
+Authors: 
+* [Neal Chokshi](https://github.com/NeonAluminum)
+* [Gokul Swaminathan](https://github.com/JavaCafe01)
+
+<img height="20%" width="20%" src="https://i.ytimg.com/vi/rujT_drTx70/maxresdefault.jpg"/>
