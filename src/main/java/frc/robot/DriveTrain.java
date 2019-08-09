@@ -121,7 +121,10 @@ public class DriveTrain {
             }
             drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft)*constant,
                     gyroPidControl.getValue(holdHeading, Robot.gyro.getAngle()));
-        } //else if (Robot.driveController.getStickButton(Hand.kRight)) {
+        } 
+        else if(Robot.driveController.getBButtonPressed()){
+            Robot.lemonTorch.toggleLight();
+        }//else if (Robot.driveController.getStickButton(Hand.kRight)) {
         //     //Robot.lemonTorch.switchPipelines(1);
         //     double forwardVal = -Robot.driveController.getY(Hand.kLeft);
         //     if(forwardVal > 0){
@@ -142,9 +145,9 @@ public class DriveTrain {
         if (Robot.driveController.getAButtonReleased()) {
             lemonPidControl.cleanup();
         }
-        if (Robot.driveController.getBButtonReleased()) {
-            lemonPidControl.cleanup();
-        }
+        // if (Robot.driveController.getBButtonReleased()) {
+        //     Robot.lemonTorch.tog
+        // }
 
     }
 

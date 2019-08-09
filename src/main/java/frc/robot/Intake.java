@@ -54,7 +54,7 @@ public class Intake extends Thread{
         unSucc = new Solenoid(Constants.VACCUMM_SOL_PORT);
 
         thisIsTheLimit = new DigitalInput(1);
-        //SmartDashboard.putNumber("out sped", 0.3);
+        SmartDashboard.putNumber("out sped", 0.3);
         // solL = new DoubleSolenoid(Constants.INTAKE_SOL_L_FWD, Constants.INTAKE_SOL_L_BWD);
         //updateSmartDashboard();
     }
@@ -80,7 +80,7 @@ public class Intake extends Thread{
         
         }
         else if(Robot.operatorController.getTriggerAxis(Hand.kRight) >= deadzone){
-            intakeOut(0.3);
+            intakeOut(SmartDashboard.getNumber("out sped", 0.5));
             //intakeOut(Math.pow(Math.abs(Robot.operatorController.getTriggerAxis(Hand.kRight)), 2)*0.3);    
         }
         else{
@@ -110,7 +110,7 @@ public class Intake extends Thread{
         }
         else{
             unSucc.set(false);
-           // succ.set(ControlMode.PercentOutput, 1);
+            succ.set(ControlMode.PercentOutput, 1);
         }
         
         //succ.set(ControlMode.PercentOutput, 1);
@@ -150,7 +150,7 @@ public class Intake extends Thread{
 
     /**
      * Disables all power to intake spark maxes.
-     *  
+     * 
      * @return void
      */
     public void stopIntake(){
