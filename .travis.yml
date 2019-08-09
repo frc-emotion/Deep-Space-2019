@@ -1,7 +1,11 @@
 sudo: true
 language: java
 install: true
+
+before_install:
+ - chmod +x gradlew
+
 script: ./gradlew build
 jdk: oraclejdk11
 notifications:
-  slack: team2658cibuilds:eVRevD2hbTknKlV8ycrLsPQa
+  slack: 2658e-motion:7OEqUxhWCy0yM0iC6YbPe0SE
