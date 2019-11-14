@@ -46,6 +46,12 @@ public class DriveTrain {
     private double holdHeading = 0.0;
 
     private double constant = 1;
+
+    // ADDED CODE
+    private boolean autoStatus;             // Whether or not auto is on   
+    private double initialEncoderDistance;  // Stores the starting encoder value when auto starts
+    private double goalDistance = 5.0;      // Distance in meters that the auto will travel
+
     public DriveTrain() {
         // drive power (max 1)
         drivePower = 0.7;
@@ -98,6 +104,16 @@ public class DriveTrain {
         // initShuffleBoard();
     }
 
+    public void autoRun() {
+        // Using absolute value as I currently do not know if the encoder decreases or increases when moving rotating "forwards"
+        if (Math.abs(rEncoder.getPosition() - initialEncoderDistance) * Math.PI * Constants.WHEEL_DIAMETER < goalDistance) {
+            System.out.printf("Distance Traveled : %f", (rEncoder.getPosition() - initialEncoderDistance) * Math.PI * Constants.WHEEL_DIAMETER);
+            drive.tankDrive(0.3, 0.3);  // Really slow so that it won't run into the wall fast
+        } else {
+            autoStatus = false;
+        }
+    }
+
     /**
      * Method that will be called in teleop
      */
@@ -124,7 +140,7 @@ public class DriveTrain {
         } 
         else if(Robot.driveController.getBButtonPressed()){
             Robot.lemonTorch.toggleLight();
-        }//else if (Robot.driveController.getStickButton(Hand.kRight)) {
+        //else if (Robot.driveController.getStickButton(Hand.kRight)) {
         //     //Robot.lemonTorch.switchPipelines(1);
         //     double forwardVal = -Robot.driveController.getY(Hand.kLeft);
         //     if(forwardVal > 0){
@@ -134,8 +150,19 @@ public class DriveTrain {
         //         drive.arcadeDrive(0.5*forwardVal, Robot.lineSensors.getTurnValue(true));
         //     }
         // } 
-        else {
-            runTankDrive();
+        
+        // ADDED CODE
+
+        // autoStatus prevents resetting intialEncoderDistance
+        } else if (Robot.driveController.getYButtonPressed() && !autoStatus) {
+            autoStatus = true;
+            initialEncoderDistance = rEncoder.getPosition();
+        } else {
+            if (autoStatus) {
+                autoRun();
+            } else {
+                runTankDrive();
+            }
             //drive.arcadeDrive(-Robot.driveController.getY(Hand.kLeft), Robot.driveController.getX(Hand.kRight), true);
         }
 
