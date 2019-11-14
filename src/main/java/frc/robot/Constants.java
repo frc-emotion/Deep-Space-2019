@@ -15,8 +15,8 @@ public class Constants {
     public static final int WRIST_SPARK_CID = 7;
 
     // Intake motors
-    public static final int INTAKE_SPARK_CID_R = 2;
-    public static final int INTAKE_SPARK_CID_L = 1;                                                                                             
+    public static final int INTAKE_SPARK_CID_R = 1;
+    public static final int INTAKE_SPARK_CID_L = 2;                                                                                             
       
 
     /* Drivetrain */
