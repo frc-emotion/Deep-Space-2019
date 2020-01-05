@@ -1,8 +1,6 @@
 package frc.robot;
 // TODO: add sd support and inRange indicator
 
-import edu.wpi.first.wpilibj.PIDSource;
-
 /**
  * Custom PID controller class to make pid work!
  * Configurable items: p, i, d, scale, tolerance
@@ -14,43 +12,13 @@ import edu.wpi.first.wpilibj.PIDSource;
  */
 public class PIDControl{
     private float kP= 0, kI = 0, kD = 0; //tuning values
-    private double accumulator = 0, error = 0, scale = 1.0, output = 0, lastError = 0, currTime = 0; // modifiers for pid
+    private double accumulator = 0, error = 0, scale = 1.0, output = 0, lastError = 0, prevTime = 0, slope=0; // modifiers for pid
     private double tolerance = 1, maxSpeed = 1;;
     private boolean inRange = false;
-    private PIDSource sensor; // main sensor being used for pid
-    
-
-    /**
-     * Constructor for PIDControl, takes in input sensor only. 
-     *
-     * @param inputSensor Sensor that implements the PIDInput interface
-     */
-    public PIDControl(PIDSource inputSensor){
-        sensor = inputSensor;
-        
-    }
-
-    
-
-    
-    /**
-     * Constructor for PIDControl, takes in input sensor and tuning values as floats. 
-     *
-     * @param inputSensor Sensor that implements the PIDInput interface
-     * @param p proportional tuning value
-     * @param i integral tuning value
-     * @param d differential tuning value
-     */
-    public PIDControl(PIDSource inputSensor, float p, float i, float d){
-        sensor = inputSensor;
-        kP = p;
-        kI = i;
-        kD = d;
-    }
 
 
 /**
-     * Constructor for PIDControl. Use this if your encode does not implement PIDSource. 
+     * Constructor for PIDControl. Use this if your encode does not implement PIDController. 
      * (im watching you CANEncoder...)
      *
      * @param p proportional tuning value
@@ -140,65 +108,6 @@ public class PIDControl{
     public void setScale(double scale){
         this.scale = scale;
     }
-    
-
-
-     /**
-     * Get value returned by pid calculations using setpoint value
-     *
-     * @param setpoint where the pid input value should be  
-     * @return double speed value
-     * 
-     */
-    public double getValue(double setpoint){
-        // if(currTime == 0 && error != 0){
-        //     currTime = System.currentTimeMillis()/100.0;
-        // }
-        // if(System.currentTimeMillis()/100.0 > 0.5){
-        //     currTime = 0;
-        //     lastError = error;
-        // }
-
-        error = setpoint - sensor.pidGet();
-        accumulator += error;
-
-
-
-        output = (error*kP +  accumulator*kI) * scale;
-
-        if(Math.abs(output) < 0.02 && Math.abs(error) < (setpoint - setpoint*tolerance)){
-            inRange = true;
-        }
-        else{
-            inRange = false;
-        }
-
-        if(Math.abs(output) > maxSpeed){ 
-            return  (output > 0 ? 1 : -1) * maxSpeed;
-        }
-        else{
-            return output;
-        }
-    }
-
-     /**
-     * Get value returned by pid calculations. 
-     * Use this method if your get method returns error directly (limelight)
-     * 
-     * @return double speed value
-     */
-    public double getValue(){
-        error = sensor.pidGet();
-        accumulator += error;
-        output = (error*kP +  accumulator*kI) * scale;
-
-        if(Math.abs(output) > maxSpeed){
-            return  (output > 0 ? 1 : -1) * maxSpeed;
-        }
-        else{
-            return output;
-        }
-    }
 
      /**
      * Get value returned by pid calculations. 
@@ -212,7 +121,22 @@ public class PIDControl{
     public double getValue(double setpoint, double currentValue){
         error = setpoint - currentValue;
         accumulator += error;
-        output = (error*kP +  accumulator*kI) * scale;
+        
+        // kD
+        double curTime = System.currentTimeMillis();
+        
+        // Skip kD for first run after cleanup
+        if (prevTime != 0){
+            slope = (error-lastError)/(curTime-prevTime);
+        }
+        
+        // Saving temp vars
+        prevTime = curTime;
+        lastError = error;
+
+        output = (error*kP +  accumulator*kI + slope*kD) * scale;
+
+        
 
         if(Math.abs(output) < 0.02 && Math.abs(error) < (setpoint - setpoint*tolerance)){
             inRange = true;
@@ -239,6 +163,8 @@ public class PIDControl{
         accumulator = 0;
         output = 0;
         inRange = false;
+        slope = 0;
+        prevTime = 0;
     }
 
     

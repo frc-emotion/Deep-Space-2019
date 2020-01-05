@@ -91,7 +91,7 @@ public class RobotFlipper {
             screwTalon.set(ControlMode.PercentOutput, 0);
         }
 
-        if (screwTalon.getOutputCurrent() >= 14) {
+        if (screwTalon.getStatorCurrent() >= 14) {
             disableScrew = true;
             Robot.operatorController.setRumble(RumbleType.kRightRumble, 0.5);
             Robot.operatorController.setRumble(RumbleType.kLeftRumble, 0.5);
@@ -186,7 +186,7 @@ public class RobotFlipper {
      * Keeps updating shuffleboard values
      */
     void workShuffleBoard() {
-        SmartDashboard.putNumber("Screw Current", screwTalon.getOutputCurrent());
+        SmartDashboard.putNumber("Screw Current", screwTalon.getStatorCurrent());
         SmartDashboard.putBoolean("Screw", !disableScrew);
         SmartDashboard.putNumber("Climber Encoder", climbEncoder.getPosition());
         SmartDashboard.putNumber("Climb A Current", climbSparkA.getOutputCurrent());
